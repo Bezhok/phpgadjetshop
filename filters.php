@@ -1,6 +1,6 @@
 <?php 
 
-function filter_objects_more_less($obj_mass, $req_parametr, $more_less) // фильтруем массив по цене
+function filters__more_less($obj_mass, $req_parametr, $more_less) // фильтруем массив по цене
 { 
 
     $mass = [];
@@ -24,7 +24,7 @@ function filter_objects_more_less($obj_mass, $req_parametr, $more_less) // фи�
 
 }
 
-function filter_objects_checkboxes($products, $req_parametr) 
+function filters__checkboxes($products, $req_parametr) 
 {
     if ( isset($_REQUEST[$req_parametr]) && is_array($_REQUEST[$req_parametr])) { // фильтрация по чекбоксам
         $mass = [];
@@ -39,7 +39,7 @@ function filter_objects_checkboxes($products, $req_parametr)
 
 }
 
-function filter_objects_option($products, $req_parametr) 
+function filters__options($products, $req_parametr) 
 {
     if ( isset($_REQUEST[$req_parametr]) && $_REQUEST[$req_parametr] != 'All' && $_REQUEST[$req_parametr] ) { // фильтрация параметру. Если выбран пункт все, то не фильтруем
         $mass = [];

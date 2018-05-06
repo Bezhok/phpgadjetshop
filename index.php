@@ -5,15 +5,9 @@
     <link rel="stylesheet" type="text/css" href="static/css/mainstyle.css">
 </head>
 <body>
-    <a href="templates/products.php">ssilrf base</a><BR />
+    <a href="index">ssilrf base</a><BR />
     <?php
-        $list = [1,2,9,0,-1,2];
-        sort($list);
-        array_reverse($list);
-        print_r($list);
-        // $_GET['test'] = 
-        $c = $_SERVER['QUERY_STRING'];
-        echo $c;
+
     ?>
     <form action="<?=$_SERVER['SCRIPT_NAME']?>" method="get">
         <input type="text" value='' name='test'>
@@ -23,11 +17,19 @@
     <form action="<?=$_SERVER['SCRIPT_NAME']?>" method="get" name='test'>
         <input type="text" value='' name='test'>
         <input type="submit" value="submit">
-        <a href='?page=1'><input class='pagination_number' type="submit" onclick="this.id='pagination_activate'" value='1'></a>
+        <a href='?page=1'><section class='pagination_number' type="submit" onclick="this.id='pagination_activate'">1</section></a>
     </form>    
     <?php 
-        // echo $_GET['test'];
-        // echo $_POST['test'];
+    // class Test {
+    //     var $x = 5;
+        
+    // }
+    // $obj = new Test;
+    // echo $obj->v;
+    // echo "$x";
+    $v = 5;
+    $c =& $v;
+    echo $c;
     ?>
 </body>
 </html>

@@ -12,6 +12,16 @@ class Product
         $price,
         $manufacturer,
         $equipmenttype;
+
+    // $fields = [
+    //     'price' => $price,
+    //     'created_year' => $created_year,
+        
+    // ];
+
+    // function fields($name) {
+    //     return $fields[$name];
+    // }
 }
 
 $pr1 = new Product;
@@ -29,7 +39,7 @@ $pr2 = new Product;
 
 $pr2->id = 2;
 $pr2->created_year = 2017;
-$pr2->name = 'test1';
+$pr2->name = 'test2';
 $pr2->description = 'spam eggs spam eggs spam eggs spam eggs spam eggs';
 $pr2->image = '';
 $pr2->price = 300;
@@ -40,7 +50,7 @@ $pr3 = new Product;
 
 $pr3->id = 3;
 $pr3->created_year = 2016;
-$pr3->name = 'test1';
+$pr3->name = 'test3';
 $pr3->description = 'spam eggs spam eggs spam eggs spam eggs spam eggs';
 $pr3->image = '';
 $pr3->price = 200;
@@ -58,7 +68,7 @@ $pr4->price = 200;
 $pr4->manufacturer = 'sumsung';
 $pr4->equipment_type = 'phone';
 
-$products = [
+$products_original_list = [
     $pr1,
     $pr2,
     $pr3,

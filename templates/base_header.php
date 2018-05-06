@@ -18,14 +18,14 @@
             <section id='menu_button' onclick='displayHiddenMenu()'>&#9776;</section>
             <nav class='hidden_header_nav'>
                 <a href="/">Главная</a>
-                <a href="goods">Товары</a>
+                <a href="goodstypes">Товары</a>
                 <a href="contacts">Контакты</a>
                 <a href="about">О нас</a>
             </nav>
         </section>
         <nav class="header_nav">
             <a href="/">Главная</a>
-            <a href="goods">Товары</a>
+            <a href="goodstypes">Товары</a>
             <a href="contacts">Контакты</a>
             <a href="about">О нас</a>
         </nav>

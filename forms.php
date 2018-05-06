@@ -1,5 +1,5 @@
 <?php // todo line 39
-function price_form() // создаем инпуты для фильтрации по ценам
+function forms__price() // создаем инпуты для фильтрации по ценам
 { 
 
     if (isset($_REQUEST['min'])) $min = $_REQUEST['min'];
@@ -11,7 +11,7 @@ function price_form() // создаем инпуты для фильтрации
     echo  "<input class='input_area' type='number' name='max' autocomplete='off' placeholder='от' value='{$max}'>";
 }
 
-function equipment_type_form($items) // создаем инпуты для фильтрации по ценам
+function forms__equipment_type($items) // создаем инпуты для фильтрации по ценам
 {
     isset($_REQUEST['equipment_type']) ? $selected = $_REQUEST['equipment_type'] : $selected = '';
     $text = "";
@@ -26,7 +26,7 @@ function equipment_type_form($items) // создаем инпуты для фи�
     echo $text;
 }
 
-function years_form() // создаем чекбоксы для фильтрации по годам
+function forms__years() // создаем чекбоксы для фильтрации по годам
 {   
     isset($_REQUEST['years']) ? $selected = $_REQUEST['years']: $selected = '';
     for ($i = 0; $i < 5; $i++) { // последнии 5 лет

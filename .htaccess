@@ -1,9 +1,6 @@
 RewriteEngine On
-RewriteBase /
 
-rewriteRule    ^$              templates/index.php
-rewriteRule    ^goods/?$       templates/goods.php
-rewriteRule    ^products/?$    templates/products.php
-    
-rewriteRule    ^about/?$       templates/about.php
-rewriteRule    ^contacts/?$    templates/contacts.php
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule .* urls.php [L]
