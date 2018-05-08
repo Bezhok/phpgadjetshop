@@ -4,19 +4,21 @@ require_once('core/urls.php');
 require_once('test_models.php');
 require_once('views.php');
 
+use core\urls as urls;
+
+echo $url;
 
 
 $urlpatterns = [
 
-    ['/^index$/', "views__index", $url],
-    ['/^goodstypes$/', "views__goodstypes", $url, [$products_original_list]],
-    ['/^products$/', "views__products", $url, [$products_original_list]],
-    ['/^product\/(?P<product_id>[-\w\d_]+)$/', "views__product", $url, [$products_original_list]],
-    ['/^about$/', "views__about", $url],
-    ['/^contacts$/', "views__contacts", $url]
+    ['|^index$|', "views\index"],
+    ['|^goodstypes/*$|', "views\goodstypes", []],
+    ['|^products/*$|', "views\products", [$products_original_list]],
+    ['|^product/(?P<product_id>[-\w\d_]+)/*$|', "views\product", [$products_original_list]],
+    ['|^about/*$|', "views\about"],
+    ['|^contacts/*$|', "views\contacts"]
 
 ];
 
-foreach_urlpattern($urlpatterns);
-
-// preg_match($regex, $url, $group_names)
+urls\foreach_urlpattern($urlpatterns, $url);
+unset($url);
