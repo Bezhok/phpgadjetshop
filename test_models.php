@@ -13,15 +13,6 @@ class Product
         $manufacturer,
         $equipmenttype;
 
-    // $fields = [
-    //     'price' => $price,
-    //     'created_year' => $created_year,
-        
-    // ];
-
-    // function fields($name) {
-    //     return $fields[$name];
-    // }
 }
 
 $pr1 = new Product;
@@ -93,46 +84,3 @@ $products_original_list = [
     $pr2,
     $pr3
 ];
-
-// $prdoucts_prices = []
-// foreach ($products as $v) {
-//     $prdoucts_prices[] = $v->price;
-// }
-// $prdoucts_createdyears = []
-// foreach ($products as $v) {
-//     $prdoucts_prices[] = $v->price;
-// }
-// $prdoucts_prices = []
-// foreach ($products as $v) {
-//     $prdoucts_prices[] = $v->price;
-// }
-// $prdoucts_prices = []
-// foreach ($products as $v) {
-//     $prdoucts_prices[] = $v->price;
-// }
-// function filter_objects($obj_mass, $req_parametr, $more_less)
-// {   
-//     $mass = [];
-//     foreach ($obj_mass as $v) {
-
-//         if ( isset($_REQUEST[$req_parametr]) ) {
-
-
-//             if ( $more_less == '>') {
-//                 if ($v->price >=  $_REQUEST[$req_parametr] ) {
-//                     $mass[] = $v;
-//             }
-    
-//             if ( $more_less == '<') {
-//                 if ($v->price <= $_REQUEST[$req_parametr] ) {
-//                     $mass[] = $v;
-//             }
-
-
-//         } elseif ( !isset($_REQUEST[$req_parametr]) || $_REQUEST[$req_parametr] === '') {
-//             $mass[] = $v;
-//         }
-
-//     }
-//     return $mass;
-// }

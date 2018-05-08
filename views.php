@@ -1,29 +1,24 @@
 <?php
+namespace views;
 
 
+require_once('core/views.php'); //render
 require_once('filters.php');
 require_once('forms.php');
 
-function render($url, $access) {
-    return require_once($url);
-}
 
-
-
-
-
-function views__index() {
+function index() {
     return render('templates/index.php', []);
 }
 
-function views__products($products_original_list) {
+function products($all_products) {
 
-    $products = $products_original_list;
+    $products = $all_products;
      //применяем фильтры 
-    $products = filters__more_less($products, 'min', '>');
-    $products = filters__more_less($products, 'max', '<');
-    $products = filters__checkboxes($products, 'years');
-    $products = filters__options($products, 'equipment_type');
+    $products = \filters\more_less_filter($products, 'min', '>');
+    $products = \filters\more_less_filter($products, 'max', '<');
+    $products = \filters\checkboxes_filter($products, 'years');
+    $products = \filters\options_filter($products, 'equipment_type');
     
     
     // извлекаем часть запроса, чтобы потом использовать в пагинации 
@@ -34,7 +29,7 @@ function views__products($products_original_list) {
     
     // начало пагинации
     
-    // обекты закрепляются к определнной странице
+    // обЪекты закрепляются к определнной странице
     $products_per_page = 3; 
     $pages = ceil( count($products)/$products_per_page );
     
@@ -53,7 +48,6 @@ function views__products($products_original_list) {
     
     function pagination($products_per_page, $page, $pages, $query) 
     {   
-        // global $products_per_page, $page, $pages, $query;
         $stop_generate = 0;
         $pagination_list = [];
 
@@ -90,17 +84,17 @@ function views__products($products_original_list) {
         [
          'products' => $products,
          'pagination' => $pagination,
-         'price_form' => "forms__price",
-         'years_form' => "forms__years",
-         'equipment_type_form' => "forms__equipment_type"
+         'price_form' => '\forms\price_form',
+         'years_form' => '\forms\years_form',
+         'equipment_type_form' => '\forms\equipment_type_form'
     ]);
 }
 
-function views__product($products_original_list, $groups_names) {
+function product($all_products, $groups_names) {
 
     $id = $groups_names['product_id'];
     
-    foreach ($products_original_list as $i) {
+    foreach ($all_products as $i) { // проверка id обЪекта
         if ($i->id == $id) {
             $product = $i;
             break;
@@ -112,17 +106,17 @@ function views__product($products_original_list, $groups_names) {
 }
 
 
-function views__goodstypes() {
+function goodstypes() {
     return render('templates/goodstypes.php', []);
 }
 
 
-function views__contacts() {
+function contacts() {
     return render('templates/contacts.php', []);
 }
 
 
-function views__about() {
+function about() {
     return render('templates/about.php', []);
 }
 

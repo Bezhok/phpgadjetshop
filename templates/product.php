@@ -52,7 +52,7 @@
             <section class='slider_button slider_button_next' onclick='nextBlock()'></section>
         </section>
         <section id="images_box" ><img id="images_box_img" height="290" src="{% static 'images/test/download.jpg' %}"></section>
-        <script type="text/javascript" src="../static/javascript/product_image_slider.js"></script>
+        <script type="text/javascript" src="/static/javascript/product_image_slider.js"></script>
 
 
 

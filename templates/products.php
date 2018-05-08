@@ -6,7 +6,7 @@
 
             <section class="schema_sorting_block_internal_filter">
 
-                <form action="<?=$_SERVER['SCRIPT_NAME']?>" method="GET">
+                <form action="" method="GET">
                     <section class="schema_sorting_block_internal_title">Цена</section>
 
                         <?php $access['price_form'](); ?><br />
@@ -27,7 +27,7 @@
 
             </section>
 
-            <script type='text/javascript' src="../static/javascript/checkbox.js"></script>
+            <script type='text/javascript' src="/static/javascript/checkbox.js"></script>
         </section>
     </article>
 
@@ -64,7 +64,7 @@
             
             <?php foreach ($access['pagination'] as $v) { echo $v ;} ?>
             <section id="pagination_nextNpre_section"></section> <!--for js-->
-            <script type='text/javascript' src="../static/javascript/products_pagination.js"></script>
+            <script type='text/javascript' src="/static/javascript/products_pagination.js"></script>
         </section>
     </article>
 

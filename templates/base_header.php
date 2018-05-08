@@ -7,9 +7,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bezhok Shop</title>
-    <link rel="stylesheet" type="text/css" href="../static/css/mainstyle.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/fonts.css">
-    <script type="text/javascript" src="../static/javascript/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/mainstyle.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/fonts.css">
+    <script type="text/javascript" src="/static/javascript/jquery-3.2.1.min.js"></script>
 </head>
 <body>
     <header>
@@ -18,18 +18,18 @@
             <section id='menu_button' onclick='displayHiddenMenu()'>&#9776;</section>
             <nav class='hidden_header_nav'>
                 <a href="/">Главная</a>
-                <a href="goodstypes">Товары</a>
-                <a href="contacts">Контакты</a>
-                <a href="about">О нас</a>
+                <a href="/goodstypes">Товары</a>
+                <a href="/contacts">Контакты</a>
+                <a href="/about">О нас</a>
             </nav>
         </section>
         <nav class="header_nav">
             <a href="/">Главная</a>
-            <a href="goodstypes">Товары</a>
-            <a href="contacts">Контакты</a>
-            <a href="about">О нас</a>
+            <a href="/goodstypes">Товары</a>
+            <a href="/contacts">Контакты</a>
+            <a href="/about">О нас</a>
         </nav>
-        <script type="text/javascript" src="../static/javascript/menu.js"></script>
+        <script type="text/javascript" src="/static/javascript/menu.js"></script>
     </header>
     <article id="main_part">
 

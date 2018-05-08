@@ -1,15 +1,15 @@
 <?php
+namespace core\urls;
+
 
 $url = strtok($_SERVER["REQUEST_URI"],'?'); // получаем адрес без query 
 $url = substr($url, 1); // обрезаем первый слеш
 
-echo $url;
 
-function url($par, $isstart=true) { // маршрутизатор. возвращает view в случае совпадения адреса. Если isstart == false, то возвращает список именованных групп 
+function url($par, $url, $isstart=true) { // маршрутизатор. возвращает view в случае совпадения адреса. Если isstart == false, то возвращает список именованных групп 
     // $par это [$regex, $view, $url]
     $regex =& $par[0];
     $view =& $par[1];
-    $url =& $par[2];
     
     if ($isstart && preg_match($regex, $url)) {
         return $view;
@@ -19,18 +19,18 @@ function url($par, $isstart=true) { // маршрутизатор. возвра�
 
 }
 
-function foreach_urlpattern($urlpatterns) {
+function foreach_urlpattern($urlpatterns, $url) {
     foreach ($urlpatterns as $pattern) { // перебираем urls
-        if (url($pattern, false)) { // проверяем совпдает ли url с существующеми
+        if (url($pattern, $url, false)) { // проверяем совпдает ли url с существующеми
         
-            if ( isset($pattern[3]) ) { // передаем аргуменыты, если они существуют
+            if ( isset($pattern[2]) && $pattern[2] ) { // передаем аргуменыты, если массив с ними существует и не пустой
 
-                $pattern[3][] = url($pattern, false); // добавляем $groups_names
-                call_user_func_array(url($pattern), $pattern[3]);
+                $pattern[2][] = url($pattern, $url, false); // добавляем $groups_names
+                url($pattern, $url)(...$pattern[2]); // массив с передаваемыми view'у аргументами
 
-            } else { // иначе просто вызываем функцию
+            } else { // если аргументов нет, то просто вызываем функцию
 
-                url($pattern)();
+                url($pattern, $url)();
 
             }
             break;
