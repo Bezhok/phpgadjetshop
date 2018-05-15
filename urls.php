@@ -1,12 +1,12 @@
 <?php 
 
-require_once('core/urls.php');
+
 require_once('test_models.php');
 require_once('views.php');
 
+require_once('core/urls.php');
 use core\urls as urls;
 
-echo $url;
 
 
 $urlpatterns = [
@@ -22,3 +22,5 @@ $urlpatterns = [
 
 urls\foreach_urlpattern($urlpatterns, $url);
 unset($url);
+
+echo $url;// testtttt

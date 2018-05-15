@@ -39,7 +39,7 @@
 
                     <section class="schema_product_main">
                         <section class="schema_product_img">
-                            <a href="#">
+                            <a href="<?= 'product/'.$product->id ?>">
                                 <img src="" alt="<?=$product->name?>"/>
                             </a>
                         </section>

@@ -1,6 +1,8 @@
 <?php // todo line 39
 namespace forms;
 
+
+
 function price_form() // создаем инпуты для фильтрации по ценам
 { 
 
@@ -17,13 +19,13 @@ function equipment_type_form($items) // создаем инпуты для фи�
 {
     isset($_REQUEST['equipment_type']) ? $selected = $_REQUEST['equipment_type'] : $selected = '';
     $text = "";
-    foreach ($items as $k => $v) {
-        if ($v == $selected) {
+    foreach ($items as $value) {
+        if ($value == $selected) {
             $ch = "selected";
         } else {
             $ch = "";
         }
-        $text .= "<option $ch value='$v'>$v</option>";
+        $text .= "<option $ch value='$value'>$value</option>";
     }
     echo $text;
 }

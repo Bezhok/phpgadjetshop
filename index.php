@@ -24,6 +24,78 @@
     $c =& $v;
     echo $c;
     echo realpath('\static\\');
+    $x = 5;
+    $list = [2,3];
+    function def(&$list) {
+        $list[0] = 5;
+    }
+    def($list);
+    print_r($list);
+    echo trim('/dfdf/dsfs/sfdsf\\/\\', '/\\');
+    $a = [1];
+    $b =& $a;
+    array_push($b, 2);
+    print_r($b);
+    print_r($a);
+    $b = 6;
+    echo $a;
+    /**
+    * 
+    */
+    class ClassName
+    {
+        public $x;
+    }
+    $obj = new ClassName();
+    $obj->x = 5;
+    $list = [$obj];
+    function test($list){
+        foreach ($list as $value) {
+            yield $value;
+        }
+    }
+    $iter = test($list);
+    foreach ($iter as $value) {
+        echo $value->x;
+    }
+    echo '<br/>';
+    // try {
+    //     $pdo = new PDO('mysql:host=php;dbname=phpmyshop_db', 'root', '', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+    //     $query = "INSERT INTO products (id, manufacturer, years, name) VALUES (NULL, 22, 3000, 22);";
+    //     $pdo->exec($query);
+    //     echo 'all good!!!';
+    // } catch (PDOException $e) {
+    //     echo $e->getMessage();
+    // }
+    // $query = "INSERT INTO products (id, years, manufacturer, name) VALUES (NULL, 'h', '343', '3244', 'jj')";
+    // try {
+    //     $pdo->exec($query);
+    // } catch (PDOException $e) {
+    //     echo $e->getMessage();
+    // }
+    $x = [
+            'name',
+            'id',
+            'years',
+            'manufacturer'
+
+        ];
+    print_r(array_diff($x, [
+            'id',
+            'years',
+            'manufacturer',
+            'name']));
+
+
+    try {
+        $pdo = new PDO('mysql:host=php;dbname=phpmyshop_db', 'root', '', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+        echo 'all good!!!';
+    } catch (PDOException $e) {
+        echo 'error base';
+    }
+
+    $query = "SHOW COLUMNS FROM products";
+    print_r($pdo->query($query)->fetchAll());
     ?>
 </body>
 </html>

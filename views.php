@@ -3,8 +3,14 @@ namespace views;
 
 
 require_once('core/views.php'); //render
-require_once('filters.php');
 require_once('forms.php');
+use \forms as forms;
+
+require_once('filters.php');
+use \filters as filters;
+
+
+
 
 
 function index() {
@@ -14,12 +20,12 @@ function index() {
 function products($all_products) {
 
     $products = $all_products;
+
      //применяем фильтры 
-    $products = \filters\more_less_filter($products, 'min', '>');
-    $products = \filters\more_less_filter($products, 'max', '<');
-    $products = \filters\checkboxes_filter($products, 'years');
-    $products = \filters\options_filter($products, 'equipment_type');
-    
+    $products = filters\more_less_filter($products, 'min', '>');
+    $products = filters\more_less_filter($products, 'max', '<');
+    $products = filters\checkboxes_filter($products, 'years');
+    $products = filters\options_filter($products, 'equipment_type');
     
     // извлекаем часть запроса, чтобы потом использовать в пагинации 
     $query = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '';
@@ -30,7 +36,7 @@ function products($all_products) {
     // начало пагинации
     
     // обЪекты закрепляются к определнной странице
-    $products_per_page = 3; 
+    $products_per_page = 5; 
     $pages = ceil( count($products)/$products_per_page );
     
     isset($_REQUEST['page']) ? $page = $_REQUEST['page'] : $page = 1; //по умолчанию первая страница
@@ -84,9 +90,9 @@ function products($all_products) {
         [
          'products' => $products,
          'pagination' => $pagination,
-         'price_form' => '\forms\price_form',
-         'years_form' => '\forms\years_form',
-         'equipment_type_form' => '\forms\equipment_type_form'
+         'price_form' => 'forms\price_form',
+         'years_form' => 'forms\years_form',
+         'equipment_type_form' => 'forms\equipment_type_form'
     ]);
 }
 
