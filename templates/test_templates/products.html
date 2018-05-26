@@ -1,0 +1,79 @@
+{% extends 'products/base.html'%}
+{% load staticfiles %}
+{% load mytags %}
+
+{% block content %}
+    <article class="schema_sorting_block">
+        <section class="schema_sorting_block_internal">
+
+            <section class="schema_sorting_block_internal_filter">
+                <form action="#" method="GET">
+                    <section class="schema_sorting_block_internal_title">Цена:</section>
+                        {{ price_filter_form }}
+                    <section class="schema_sorting_block_internal_title">Дата выхода на рынок:</section>
+                        {{ years_filter_form }}
+
+                        {% if goods != 'manufacturer' %}    {# если мы перещли сюда через view manufacutrer #}
+                            <section class="schema_sorting_block_internal_title">Производитель:</section>
+                            {{ manufacturer_filter_form }} <br/>
+                        {% endif %} 
+                        
+                        {% if goods != 'products' %}      {# если мы перещли сюда через view products #}
+                            <section class="schema_sorting_block_internal_title">Тип товаров:</section>
+                            {{ equipment_type_filter_form }} <br/>
+                        {% endif %}    
+                    <button class="submit" type="submit">Submit</button>
+                </form>
+            </section>
+            <script type='text/javascript' src="{% static 'javascript/checkbox.js' %}"></script>
+        </section>
+    </article>
+    <article class="schema_all_products">
+        <section class='schema_all_products_box'>
+
+            {% for product in products %}
+
+                    <section class="schema_product_main">
+                        <section class="schema_product_img">
+                            <a href="{% url 'product' product.equipment_type.identifier product.manufacturer.identifier product.identifier %}">
+                                <img src="{{ product.main_image.url }}" alt="{{ product.title }}"/>
+                            </a>
+                        </section>
+                        <section class="schema_product_description_block">
+                            <a href="{% url 'product' product.equipment_type.identifier product.manufacturer.identifier product.identifier %}">
+                                <h2 class="schema_product_title">
+                                    {{ product.title }}
+                                </h2>
+                            </a>
+                            <section class="schema_price">{{ product.price }}руб</section>
+                            <section class="schema_product_description">
+                                {{ product.description }}
+                            </section>
+                        </section>
+                    </section>
+
+            {% endfor %}
+        </section>
+        <section class="shema_line"></section>
+        <section id="schema_all_products_pagination">
+
+            {% if products.has_previous %}
+                <a id='pagination_preview' href="?{% query_update request.GET 'page' products.previous_page_number %}"><section class="pagination_nextNpre" onclick="id='pagination_activate'">Предыдущая</section></a>
+            {% endif %}
+
+            {% if products.paginator.num_pages > 1 %}
+                {% for num in pag_num_list %}
+                    <a href="?{% query_update request.GET 'page' num %}"><section class="pagination_number {% if num == products.number %} pagination_activate {% endif %}" onclick="this.id='pagination_activate'" >{{ num }}</section></a>
+                {% endfor %}
+            {% endif %}
+
+            {% if products.has_next %}
+                <a id='pagination_next' href="?{% query_update request.GET 'page' products.next_page_number %}"><section class="pagination_nextNpre" onclick="id='pagination_activate'">Следующая</section></a>
+            {% endif %}
+
+            <section id="pagination_nextNpre_section"></section> <!-- for js -->
+            <script type='text/javascript' src="{% static 'javascript/products_pagination.js' %}"></script>
+
+        </section>
+    </article>
+{% endblock %}
