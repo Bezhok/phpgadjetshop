@@ -1,6 +1,5 @@
-{% extends 'products/base.html'%}
-{% load staticfiles %}
-{% load mytags %}
+{% extends 'base.html'%}
+
 
 {% block content %}
     <article class="schema_sorting_block">
@@ -25,7 +24,7 @@
                     <button class="submit" type="submit">Submit</button>
                 </form>
             </section>
-            <script type='text/javascript' src="{% static 'javascript/checkbox.js' %}"></script>
+            <script type='text/javascript' src="{{ static('javascript/checkbox.js') }}"></script>
         </section>
     </article>
     <article class="schema_all_products">
@@ -35,12 +34,12 @@
 
                     <section class="schema_product_main">
                         <section class="schema_product_img">
-                            <a href="{% url 'product' product.equipment_type.identifier product.manufacturer.identifier product.identifier %}">
+                            <a href="{{ url('product') }}">
                                 <img src="{{ product.main_image.url }}" alt="{{ product.title }}"/>
                             </a>
                         </section>
                         <section class="schema_product_description_block">
-                            <a href="{% url 'product' product.equipment_type.identifier product.manufacturer.identifier product.identifier %}">
+                            <a href="{{ url('product', product.equipment_type.identifier, product.manufacturer.identifier, product.identifier) }}">
                                 <h2 class="schema_product_title">
                                     {{ product.title }}
                                 </h2>
@@ -58,21 +57,21 @@
         <section id="schema_all_products_pagination">
 
             {% if products.has_previous %}
-                <a id='pagination_preview' href="?{% query_update request.GET 'page' products.previous_page_number %}"><section class="pagination_nextNpre" onclick="id='pagination_activate'">Предыдущая</section></a>
+                <a id='pagination_preview' href="?% query_update request.GET 'page' products.previous_page_number %}"><section class="pagination_nextNpre" onclick="id='pagination_activate'">Предыдущая</section></a>
             {% endif %}
 
             {% if products.paginator.num_pages > 1 %}
                 {% for num in pag_num_list %}
-                    <a href="?{% query_update request.GET 'page' num %}"><section class="pagination_number {% if num == products.number %} pagination_activate {% endif %}" onclick="this.id='pagination_activate'" >{{ num }}</section></a>
+                    <a href="?% query_update request.GET 'page' num %}"><section class="pagination_number {% if num == products.number %} pagination_activate {% endif %}" onclick="this.id='pagination_activate'" >{{ num }}</section></a>
                 {% endfor %}
             {% endif %}
 
             {% if products.has_next %}
-                <a id='pagination_next' href="?{% query_update request.GET 'page' products.next_page_number %}"><section class="pagination_nextNpre" onclick="id='pagination_activate'">Следующая</section></a>
+                <a id='pagination_next' href="?% query_update request.GET 'page' products.next_page_number %}"><section class="pagination_nextNpre" onclick="id='pagination_activate'">Следующая</section></a>
             {% endif %}
 
             <section id="pagination_nextNpre_section"></section> <!-- for js -->
-            <script type='text/javascript' src="{% static 'javascript/products_pagination.js' %}"></script>
+            <script type='text/javascript' src="{{ static('javascript/products_pagination.js') }}"></script>
 
         </section>
     </article>

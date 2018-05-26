@@ -41,16 +41,18 @@ class Urls_Twig_Extension extends \Twig_Extension
                 }
                 return '/' . $url_regex;
 
-            } elseif (!$matches_count) {
+            } elseif (!$matches_count && !count($parameters)) {
+
                 $url_regex = $urls_path_patterns[$url_name]; // извлекаем шаблон урлов
                 return '/' . $url_regex;
 
             } else {
-                die('аргументов передано больше, чем ожидалось');
+                throw new \Exception('Arguments more or less than expected');
+                
             }
 
         } else {
-            die('такой урл не существует');
+            throw new \Exception('This url doesn\'t exist');
         }
     }
 

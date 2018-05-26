@@ -1,7 +1,7 @@
 <?php
 
-// namespace BaseModel;
-// namespace BaseModel;
+namespace basemodels;
+
 
 /**
    Базовая модель
@@ -61,10 +61,12 @@ class BaseModel {
 
     public static function get_all_objects()
     {
-        $table_name = strtolower(static::class);
+        $table_name = preg_replace('#.*\\\#', '', static::class);
+        $table_name = strtolower($table_name);
+
         $query = "SELECT * FROM $table_name";
         
-        return self::$pdo->query($query)->fetchAll(PDO::FETCH_ASSOC);
+        return self::$pdo->query($query)->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public static function plug_pdo($pdo)

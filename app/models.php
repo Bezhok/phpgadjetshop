@@ -1,11 +1,13 @@
 <?php
 
-
+namespace models;
 
 
 require_once CORE_DIR . '/models.php';
-// use BaseModel;
-class Product extends BaseModel {
+
+
+
+class Product extends \basemodels\BaseModel {
 
     public static function mandatory_fields() //обязательные поля
     { 
@@ -23,5 +25,3 @@ class Product extends BaseModel {
 
 
 }
-
-

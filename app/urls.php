@@ -2,17 +2,17 @@
 
 $urlpatterns = [
 
-    // ['index', 'views\index'],
-    // ['goodstypes', 'views\goodstypes', []],
+    ['index', 'views\index', 'index'],
+    ['goodstypes', 'views\goodstypes', 'goodstypes'],
 
     ['products', 'views\products', 'products'], // products/   /
     ['product/{product_id}', 'views\product', 'product'],
 
-    // ['about', 'views\about'],
-    // ['contacts', 'views\contacts'],
+    ['about', 'views\about', 'about'],
+    ['contacts', 'views\contacts', 'contacts'],
 
-    // ['admin', 'views\admin'],product
+    ['admin', 'views\admin', 'admin'],
 
-    // ['twig', 'views\twig']
+    // ['twig', 'views\twig', 'twig']
 ];
 

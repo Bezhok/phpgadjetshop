@@ -10,8 +10,15 @@ define('TWIG_CHACHE_DIR', CORE_DIR . '/cache');
 define('TWIG_EXTENSIONS_DIR', CORE_DIR . '/modules/twig_extensions');
 
 
+// Static files (CSS, JavaScript, Images)
+define('STATIC_URL', '/static' );
 define('STATIC_ROOT', BASE_DIR . '/static' );
+
+define('MEDIA_URL', '/media' );
 define('MEDIA_ROOT', BASE_DIR . '/media' );
+
+
+
 // define('SQL', value)
 
 

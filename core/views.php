@@ -8,16 +8,16 @@ function render($url, $vars = [])
 {
 
     global $urlpatterns;
-    $loader = new Twig_Loader_Filesystem(BASE_DIR . '/templates/test_templates/');
+    $loader = new Twig_Loader_Filesystem(BASE_DIR . '/templates/app/');
     $twig = new Twig_Environment($loader, array(
+        'strict_variables' => true
         // 'cache' => TWIG_CHACHE_DIR, //кеш
     ));
 
     $twig->addExtension(new \Twig_Extensions\Urls_Twig_Extension($urlpatterns));
-    $twig->addExtension(new \Twig_Extensions\Static_Files_Twig_Extension(STATIC_ROOT));
+    $twig->addExtension(new \Twig_Extensions\Static_Files_Twig_Extension(STATIC_URL));
 
     $template = $twig->load($url);
-    // echo '<pre>';print_r($vars);
     $template->display($vars);
 
 }

@@ -14,7 +14,7 @@ use \filters as filters;
 
 
 function index($request) {
-    return render('index.php', []);
+    return render('index.html', []);
 }
 
 function products($request ) {
@@ -114,23 +114,19 @@ function product($request) {
 
 
 function goodstypes($request) {
-    return render('goodstypes.php', []);
+    return render('goodstypes.html', []);
 }
 
 
 function contacts($request) {
-    return render('contacts.php', []);
+    return render('contacts.html', []);
 }
 
 
 function about($request) {
-    return render('about.php', []);
+    return render('about.html', []);
 }
 
 function admin($request) {
     return render('static/gulp/app/admin_sign-in.php', []);
-}
-
-function twig($request) {
-    return render('twig.php', []);
 }

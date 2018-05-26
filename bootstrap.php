@@ -5,9 +5,11 @@ require_once 'app/models.php';
 
 
 
+
+
 // таблица 
 try {
-    $pdo = new PDO('mysql:host=php;dbname=phpmyshop_db', 'root', '', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+    $pdo = new \PDO('mysql:host=php;dbname=phpmyshop_db', 'root', '', [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
 } catch (PDOException $e) {
     echo 'error base';
 }
@@ -16,13 +18,13 @@ try {
 // $query = "SELECT * FROM products";
 // print_r($pdo->query($query)->fetchAll());
 
-BaseModel::plug_pdo($pdo); // settings
+basemodels\BaseModel::plug_pdo($pdo); // settings
 
 
 
 
 
-$products = Product::get_all_objects();
+$products = models\Product::get_all_objects();
 
 require_once 'app/views.php';
 require_once CORE_DIR . '/urls.php';

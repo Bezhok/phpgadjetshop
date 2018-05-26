@@ -7,9 +7,9 @@ namespace Twig_Extensions;
 */
 class Static_Files_Twig_Extension extends \Twig_Extension
 {
-    public function __construct($STATIC_ROOT)
+    public function __construct($STATIC_URL)
     {
-        $this->STATIC_ROOT = $STATIC_ROOT;
+        $this->STATIC_URL = $STATIC_URL;
     }
 
     public function getFunctions()
@@ -21,7 +21,7 @@ class Static_Files_Twig_Extension extends \Twig_Extension
 
     public function static($path_name)
     {
-        return  $this->STATIC_ROOT . '/' . $path_name;
+        return  $this->STATIC_URL . '/' . $path_name;
     }
 
 }

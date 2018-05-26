@@ -1,7 +1,7 @@
-{% extends 'products/base.html' %}
-{% load staticfiles %}
+{% extends 'base.html' %}
 
-{% block head %}<meta name="google-site-verification" content="HEDM3uELu3FN9fACmE6b0YBs547xnvEL1ffcXWgC7r8" />{% endblock %}
+
+{% block head %}<meta name="" content="" />{% endblock %}
 
 {% block content %}
     <section class='landing_description'>
@@ -16,7 +16,7 @@
                 <ul id='slider'>
                     {% for brand in manufacturers %}
                         <li class="block block_brand">
-                            <a href='{% url "manufacturer" brand.identifier %}'>
+                            <a href='{{ url("index") }}'>
                                 <section class='slider_img_container'>
                                     <img src="{{ brand.image.url }}" style="max-height:50px;" class="block_image" alt="{{ brand }}"/>
                                 </section>
@@ -26,7 +26,7 @@
             </section>
             <section class='slider_button slider_button_next' onclick='nextBlock()'></section>
         </section>
-        <script type="text/javascript" src="{% static 'javascript/index_brand_slider.js' %}"></script>
+        <script type="text/javascript" src="{{ static('javascript/index_brand_slider.js') }}"></script>
         <strong>Повседневная практика показывает</strong>
         <p>Равным образом начало повседневной работы по формированию позиции позволяет оценить значение систем массового участия. Товарищи! дальнейшее развитие различных форм деятельности представляет собой интересный эксперимент проверки систем массового участия. Товарищи! новая модель организационной деятельности позволяет оценить значение системы обучения кадров, соответствует насущным потребностям. Разнообразный и богатый опыт начало повседневной работы по формированию позиции представляет собой интересный эксперимент проверки соответствующий условий активизации. Разнообразный и богатый опыт дальнейшее развитие различных форм деятельности обеспечивает широкому кругу (специалистов) участие в формировании существенных финансовых и административных условий.
         </p>
