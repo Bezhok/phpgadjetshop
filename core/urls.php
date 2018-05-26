@@ -6,34 +6,70 @@ $url = strtok($_SERVER["REQUEST_URI"],'?'); // получаем адрес бе�
 $url = substr($url, 1); // обрезаем первый слеш
 
 
-function url($par, $url, $isstart=true) { // маршрутизатор. возвращает view в случае совпадения адреса. Если isstart == false, то возвращает список именованных групп 
-    // $par это [$regex, $view, $url]
-    $regex =& $par[0];
-    $view =& $par[1];
     
-    if ($isstart && preg_match($regex, $url)) {
-        return $view;
-    } elseif (preg_match($regex, $url, $groups_names)) {
-        return $groups_names;
-    }
-
-}
 
 function foreach_urlpattern($urlpatterns, $url) {
-    foreach ($urlpatterns as $pattern) { // перебираем urls
-        if (url($pattern, $url, false)) { // проверяем совпдает ли url с существующеми
+
+    function url($par, $url, $method='return view') { // маршрутизатор. возвращает view в случае совпадения адреса
+        // $par это [$regex, $view, $url]
+        $regex = convert_url($par[0]);
+        $view = $par[1];
         
-            if ( isset($pattern[2]) && $pattern[2] ) { // передаем аргуменыты, если массив с ними существует и не пустой
+        if ($method == 'return view' && preg_match($regex, $url)) {
+            return $view;
 
-                $pattern[2][] = url($pattern, $url, false); // добавляем $groups_names
-                url($pattern, $url)(...$pattern[2]); // массив с передаваемыми view'у аргументами
+        } elseif ($method == 'return args for view' && preg_match($regex, $url, $args)) {
+            return $args;
 
-            } else { // если аргументов нет, то просто вызываем функцию
+        } elseif ($method == 'return true if match' && preg_match($regex, $url) ) {
+            return true;
+        }
 
-                url($pattern, $url)();
+    }
 
-            }
+    foreach ($urlpatterns as $pattern) { // перебираем urls
+        if (url($pattern, $url, 'return true if match')) { // проверяем совпдает ли url с существующеми
+        
+            $all_args = [];
+            $all_args[] =  url($pattern, $url, 'return args for view'); // добавляем в $args именованные группы
+
+            // if ( isset($pattern[3]) && $pattern[3] ) { // передаем переменные, если массив с ними существует и не пустой
+                // foreach ($pattern[3] as $value) {
+                    // $all_args[] = $value;
+                // }
+            // }
+            url($pattern, $url)(...$all_args); // массив с передаваемыми view'у аргументами
             break;
         } 
     }    
 }
+
+
+
+function convert_url($url, $pattern='#\{[-\w\d_]+\}#') // преобразуем шаблон вида view/{str1}/{str2} в #^view/(?P<str1>[-\w\d_]+)/(?P<str2>[-\w\d_]+)/*$#
+{
+
+    preg_match_all($pattern, $url, $matches);
+    $matches_count = count($matches[0]);
+
+    for ($i=1; $i <= $matches_count ; $i++) { 
+
+        $url = preg_replace_callback(
+            $pattern, 
+            function($matches) {
+                $edited_url = preg_replace('#[\{\}]#', '', $matches[0] );
+                $edited_url = '(?P<' . $edited_url . '>[-\w\d_]+)';
+                return $edited_url;
+            },
+            $url,
+            1
+            
+        );
+
+    }
+
+    $url =  '#^' . $url . '/*$#';   
+
+    return $url;   
+}
+

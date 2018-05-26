@@ -2,7 +2,7 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href="static/css/mainstyle.css">
+    <!-- <link rel="stylesheet" type="text/css" href="static/gulp/app/css/main.css"> -->
 </head>
 <body>
     <a href="index">ssilrf base</a><BR />
@@ -95,7 +95,26 @@
     }
 
     $query = "SHOW COLUMNS FROM products";
-    print_r($pdo->query($query)->fetchAll());
+    // print_r($pdo->query($query)->fetchAll());
+
+
+    $str = 'step=5
+    min=0
+    max=100';
+    
+    $output = array();
+    $array = explode("\n",$str);
+    foreach($array as $a){
+        $output[substr($a,0,strpos($a,"="))] = substr($a,strpos($a,"=")+1);
+    }
+    
+    echo '<pre>';
+    print_r($output);
+    echo '</pre>';
     ?>
+    <div class="" style="height: 500px;background: blue;"><div class="">23874392</div>
+    <div class="" style="height: 100%;background: green;">fdjifsdifjdsjf</div>
+    </div>
+
 </body>
 </html>

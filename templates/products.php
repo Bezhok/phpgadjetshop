@@ -39,19 +39,19 @@
 
                     <section class="schema_product_main">
                         <section class="schema_product_img">
-                            <a href="<?= 'product/'.$product->id ?>">
-                                <img src="" alt="<?=$product->name?>"/>
+                            <a href="<?= 'product/'.$product['id'] ?>">
+                                <img src="" alt="<?=$product['title']?>"/>
                             </a>
                         </section>
                         <section class="schema_product_description_block">
-                            <a href="<?= 'product/'.$product->id ?>">
+                            <a href="<?= 'product/'.$product['id'] ?>">
                                 <h2 class="schema_product_title">
-                                    <?=$product->name;?>
+                                    <?=$product['title'];?>
                                 </h2>
                             </a>
-                            <section class="schema_price"><?=$product->price;?>руб</section>
+                            <section class="schema_price"><?=$product['price'];?>руб</section>
                             <section class="schema_product_description">
-                                <?=$product->description;?>
+                                <?=$product['description'];?>
                             </section>
                         </section>
                     </section>

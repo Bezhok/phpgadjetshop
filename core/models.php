@@ -1,6 +1,6 @@
 <?php
 
-namespace BaseModel;
+// namespace BaseModel;
 // namespace BaseModel;
 
 /**
@@ -24,32 +24,38 @@ class BaseModel {
 
     private function fields_check($fields)
     {
-
+        // self::mandatory_fields();
         if ( !array_diff(array_keys($fields), $this->mandatory_fields()) ) $this->fields = $fields;
-        else echo 55;
+        else false;
     }
 
     public function add_object($fields) 
     {
         // получаем значения и ключи списка и преобразуем в sql запрос
-        $this->fields_check($fields); // проверяем 
-        $fields = $this->fields;
+        if ($this->fields_check($fields)) { // проверяем
 
-        $keys = array_keys($fields);
-        $keys = implode(', ', $keys);
-        $values = array_values($fields);
-        $questions_signs_array = array_fill(0, count($values), '?');
-        $query_questions_signs_for_pdo = implode(', ', $questions_signs_array );
+            $fields = $this->fields;
+            echo $fields;
 
-        $query = "INSERT INTO $this->table_name ($keys) VALUES ( $query_questions_signs_for_pdo )";
+            $keys = array_keys($fields);
+            $keys = implode(', ', $keys);
+            $values = array_values($fields);
+            $questions_signs_array = array_fill(0, count($values), '?');
+            $query_questions_signs_for_pdo = implode(', ', $questions_signs_array );
 
-        try { // выполняем запрос
-            $statement = self::$pdo->prepare($query);
-            $statement->execute($values);
-        } catch (PDOException $e) {
+            $query = "INSERT INTO $this->table_name ($keys) VALUES ( $query_questions_signs_for_pdo )";
+
+            try { // выполняем запрос
+                $statement = self::$pdo->prepare($query);
+                $statement->execute($values);
+            } catch (PDOException $e) {
+                echo 'Неправильно введены данные';
+                echo $e->getMessage();
+            }        
+        } else {
             echo 'Неправильно введены данные';
-            echo $e->getMessage();
         }
+    
 
     }
 

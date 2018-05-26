@@ -6,4 +6,4 @@ RewriteCond %{REQUEST_FILENAME} !-d
 
 #RewriteRule ^static$ static/ [L]
 #RewriteRule media media/ [L]
-RewriteRule .* urls.php [L]
+RewriteRule .* bootstrap.php [L]

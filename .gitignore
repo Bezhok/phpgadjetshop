@@ -1,0 +1,7 @@
+static/gulp
+core/composer
+core/cache
+
+examples.txt
+
+media/*

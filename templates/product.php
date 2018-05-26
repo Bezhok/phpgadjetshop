@@ -3,13 +3,13 @@
 
 
     <article>
-        <h2 class="product_title"><?=$access['product']->name?></h2>
+        <h2 class="product_title"><?=$access['product']['title']?></h2>
         <section class="product_main_description">
-            <section class="product_md_image"><img src="{{ product.main_image.url }}" alt="<?=$access['product']->name?>" ></section>
+            <section class="product_md_image"><img src="{{ product.main_image.url }}" alt="<?=$access['product']['title']?>" ></section>
             <section>         <b>Производитель:</b> {{ product.manufacturer.name }}</section>
             <section class="product_md_description">
                 
-                <?=$access['product']->description?>
+                <?=$access['product']['description']?>
                     
             </section>
         </section>
