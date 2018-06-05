@@ -1,11 +1,7 @@
 <?php
 
 require_once 'settings.php';
-require_once 'app/models.php';
-
-
-
-
+require_once CORE_DIR . '/models.php';
 
 // таблица 
 try {
@@ -21,18 +17,14 @@ try {
 basemodels\BaseModel::plug_pdo($pdo); // settings
 
 
-
-
-
-$products = models\Product::get_all_objects();
-
-require_once 'app/views.php';
 require_once CORE_DIR . '/urls.php';
 require_once 'app/urls.php';
+require_once 'app/views.php';
+
 use core\urls as urls;
 
 
-echo $url;// testtttt
+// echo $url;// testtttt
 
 urls\foreach_urlpattern($urlpatterns, $url);
 

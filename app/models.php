@@ -20,8 +20,36 @@ class Product extends \basemodels\BaseModel {
             'description',
             'equipmenttype',
             'main_image'
+
         ];
     }
 
+}
+
+class Manufacturer extends \basemodels\BaseModel {
+
+    public static function mandatory_fields() //обязательные поля
+    { 
+        return [
+            
+            'name',
+            'image'
+
+        ];
+    }
+
+}
+
+class Equipmenttype extends \basemodels\BaseModel {
+
+    public static function mandatory_fields() //обязательные поля
+    { 
+        return [
+            
+            'name',
+            'image'
+
+        ];
+    }
 
 }

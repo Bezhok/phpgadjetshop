@@ -3,10 +3,12 @@ namespace views;
 
 
 require_once CORE_DIR . '/views.php'; //render
+require_once BASE_DIR . '/app/models.php';
 require_once 'forms.php';
-use \forms as forms;
-
 require_once 'filters.php';
+
+use \models as models;
+use \forms as forms;
 use \filters as filters;
 
 
@@ -14,14 +16,16 @@ use \filters as filters;
 
 
 function index($request) {
-    return render('index.html', []);
+
+    models\Manufacturer::get_all_objects();
+    $manufacturers = models\Manufacturer::make_query();
+
+    return render('index.html', ['manufacturers' => $manufacturers]);
 }
 
 function products($request ) {
 
-    global $products;
-    // $products = $all_products;
-
+    models\Product::get_all_objects();
      //применяем фильтры 
     // $products = filters\more_less_filter($products, 'min', '>'); //
     // $products = filters\more_less_filter($products, 'max', '<');
@@ -38,8 +42,7 @@ function products($request ) {
     
     // обЪекты закрепляются к определнной странице
     $products_per_page = 5; 
-    $pages = ceil( count($products)/$products_per_page );
-    
+    $pages = ceil( models\Product::get_countNmake_query()/$products_per_page );
     isset($_REQUEST['page']) ? $page = $_REQUEST['page'] : $page = 1; //по умолчанию первая страница
     
     if ( !isset($_REQUEST['page']) || !is_numeric($page) ) { // проверка полуенных данных на существование и является ли целым числом
@@ -49,10 +52,10 @@ function products($request ) {
     } else {
         $page = ceil($_REQUEST['page']);
     }
-    
-    $products = array_slice($products, $products_per_page*($page - 1), $products_per_page);
-    
-    
+
+    models\Product::limit($products_per_page*($page - 1), $products_per_page);
+    $products = models\Product::make_query();
+
     function pagination($products_per_page, $page, $pages, $query) 
     {   
         $stop_generate = 0;
@@ -91,30 +94,31 @@ function products($request ) {
         [
          'products' => $products,
          'pagination' => $pagination,
-         'price_form' => 'forms\price_form',
-         'years_form' => 'forms\years_form',
-         'equipment_type_form' => 'forms\equipment_type_form'
+         'price_form' => forms\price_form(),
+         'years_form' => forms\years_form(),
+         'equipment_type_form' => forms\equipment_type_form(),
+         'manufacturer_form' => forms\manufacturer_form(),
     ]);
 }
 
 function product($request) {
-    global $products;
-    $id = $request['product_id'];
     
-    foreach ($products as $i) { // проверка id обЪекта
-        if ($i['id'] == $id) {
-            $product = $i;
-            break;
-        }
-    } 
-    if (!isset($product)) die('нет запрашиваемой информации 404'); 
+    $id_from_request = $request['product_id'];
+    models\Product::get_all_objects($id_from_request);
+    $product = models\Product::make_query()[0];
+
+    if (!$product) die('нет запрашиваемой информации 404'); 
 
     return render('product.html', ['product' => $product]);
 }
 
 
 function goodstypes($request) {
-    return render('goodstypes.html', []);
+
+    models\Equipmenttype::get_all_objects();
+    $equipmenttypes = models\Equipmenttype::make_query();
+
+    return render('goodstypes.html', ['equipmenttypes' => $equipmenttypes]);
 }
 
 

@@ -1,13 +1,14 @@
 {% extends 'base.html'%}
 
 {% block content %}
+
     <nav id="main_nav_for_types_of_things">
         <ul><!--without </li> for deleting "invisible spacing" between inline-block elements
                                       -->
-            {% for type in type_list %}
-                <li class="main_nav_thing"><a href="{{ url('products') }}">
+            {% for type in equipmenttypes %}
+                <li class="main_nav_thing"><a href="{{ url('products') }}?equipment_type={{ type.name }}">
                     <section>
-                        <section class="main_nav_thing_image"><img src="{{ type.image.url }}" alt="{{ type.name }}"/></section>
+                        <section class="main_nav_thing_image"><img src="{{ type.image }}" alt="{{ type.name }}"/></section>
                         <section class="main_nav_thing_item">
                             <section class="main_nav_thing_title">{{ type.name }}</section>
                             <section class="main_nav_thing_discription">5000 товаров
@@ -18,5 +19,5 @@
             {% endfor %}
         </ul>
     </nav>
-    <a href="">{{ url('products', 5) }}</a>
+
 {% endblock %}
