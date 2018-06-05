@@ -19,7 +19,7 @@ class Urls_Twig_Extension extends \Twig_Extension
 
     public function url($url_name, ...$parameters) // 
     {
-        $urlpatterns =& $this->urlpatterns;
+        $urlpatterns = $this->urlpatterns;
         $urls_path_patterns = [];
         foreach ($urlpatterns as $pattern) { // извлекаем урлы
             $urls_path_patterns[$pattern[2]] = $pattern[0];
