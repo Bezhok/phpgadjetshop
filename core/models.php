@@ -29,16 +29,18 @@ class BaseModel {
         return $table_name;
     }
 
-
-    public static function get_all_objects(string $column='*')
-    {
-        $table_name = self::table_name();
-        self::$query = "SELECT $column FROM $table_name";
-    }
-
     public static function plug_pdo($pdo)
     {
         self::$pdo = $pdo;
+    }
+
+    public static function get_all_objects($id = '')
+    {
+        $table_name = self::table_name();
+        self::$query = "SELECT * FROM $table_name";
+
+        if ($id) self::$query .= " WHERE id = ?";
+        self::$values = [$id];
     }
 
     public static function del_object($id)
@@ -74,13 +76,20 @@ class BaseModel {
 
     }
 
-    public static function make_query($LIMIT = false, $LIMIT_COUNT = false)
+    public static function limit($LIMIT, $LIMIT_COUNT = false)
     {
-        if ($LIMIT && is_numeric($LIMIT)) {
+        if (is_numeric($LIMIT) && isset(self::$query)) {
             self::$query .= " LIMIT " . (int)$LIMIT;
-            if ($LIMIT_COUNT && is_numeric($LIMIT_COUNT)) self::$query .= ", " . (int)$LIMIT_COUNT;
+            if ($LIMIT_COUNT !== false && is_numeric($LIMIT_COUNT)) self::$query .= ", " . (int)$LIMIT_COUNT;
+        } else {
+            throw new \Exception("Error Processing Request");
+            
         }
         
+    }
+
+    public static function make_query()
+    {   
         if (empty(self::$values)) self::$values = [];
 
         try { // выполняем запрос
@@ -147,10 +156,14 @@ class BaseModel {
 
     }
 
+    public static function get_object()
+    {
+        $query = "SELECT * FROM $this->table_name ";
+    }
+
     public function edit_object($fields) // не работает 
     {
         $query = "UPDATE $this->table_name SET ";
     }
 
 }
-//git commit -m "added count, limit, foreign columns"
