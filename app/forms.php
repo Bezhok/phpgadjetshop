@@ -1,6 +1,40 @@
 <?php // todo line 39
 namespace forms;
 
+require_once BASE_DIR . '/app/models.php';
+
+use \models as models;
+
+function generate_option($value) // создаем непосредственно сами optionы
+{   
+    global $selected;
+    if ($value == $selected) {
+        $ch = "selected";
+    } else {
+        $ch = "";
+    }
+    $value = htmlspecialchars($value);
+    return "<option $ch value='$value'>$value</option>";
+}
+
+function base_option_form($request_name, $items, $default = 'All')
+{
+    $request_name = htmlspecialchars($request_name);
+
+    isset($_REQUEST[$request_name]) ? $selected = $_REQUEST[$request_name] : $selected = '';
+    
+
+
+    $form = generate_option($default);
+    foreach ($items as $value) {
+        $form .= generate_option($value['name']);
+    }
+
+    $form = '<select name="{$request_name}" class="select_list">' . $form . '</select>';
+
+    return $form;
+
+}
 
 
 function price_form() // создаем инпуты для фильтрации по ценам
@@ -18,21 +52,20 @@ function price_form() // создаем инпуты для фильтрации
     return $form;
 }
 
-function equipment_type_form($items = ['All', 'phone', 'tablet', 'name3']) // создаем инпуты для фильтрации по типам товаров
+function equipment_type_form() // создаем инпуты для фильтрации по типам товаров
 {
-    isset($_REQUEST['equipment_type']) ? $selected = $_REQUEST['equipment_type'] : $selected = '';
-    $form = "";
-    foreach ($items as $value) {
-        if ($value == $selected) {
-            $ch = "selected";
-        } else {
-            $ch = "";
-        }
-        $value = htmlspecialchars($value);
-        $form .= "<option $ch value='$value'>$value</option>";
-    }
-    $form = '<select name="equipment_type" class="select_list">' . $form . '</select>';
-    return $form;
+    models\Equipmenttype::get_all_objects();
+    $items = models\Equipmenttype::make_query();
+
+    return base_option_form('equipment_type', $items);
+}
+
+function manufacturer_form() // создаем инпуты для фильтрации по роизводителям
+{
+    models\Manufacturer::get_all_objects();
+    $items = models\Manufacturer::make_query();
+
+    return base_option_form('manufacturer', $items);
 }
 
 function years_form() // создаем чекбоксы для фильтрации по годам
@@ -55,4 +88,3 @@ function years_form() // создаем чекбоксы для фильтрац
 
     return $form;
 }
-$list = ['All', 'phone', 'tablet', 'name3']; //todo
