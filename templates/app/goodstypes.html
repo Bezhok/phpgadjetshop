@@ -6,7 +6,7 @@
         <ul><!--without </li> for deleting "invisible spacing" between inline-block elements
                                       -->
             {% for type in equipmenttypes %}
-                <li class="main_nav_thing"><a href="{{ url('products') }}?equipment_type={{ type.name }}">
+                <li class="main_nav_thing"><a href="{{ url('products') }}?equipment_type={{ type.id }}">
                     <section>
                         <section class="main_nav_thing_image"><img src="{{ type.image }}" alt="{{ type.name }}"/></section>
                         <section class="main_nav_thing_item">

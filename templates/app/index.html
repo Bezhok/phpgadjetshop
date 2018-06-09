@@ -16,8 +16,8 @@
                 <ul id='slider'>
                     {% for brand in manufacturers %}
                         <li class="block block_brand">
-                            <a href='{{ url("products") }}?manufacturer={{ brand.name }}'>
-                                <section class='slider_img_container'>{{ brand.image }}
+                            <a href='{{ url("products") }}?manufacturer={{ brand.id }}'>
+                                <section class='slider_img_container'>
                                     <img src="{{ brand.image }}" style="max-height:50px;" class="block_image" alt="{{ brand.name }}"/>
                                 </section>
                             </a>
