@@ -3,10 +3,12 @@ namespace views;
 
 
 require_once CORE_DIR . '/views.php'; //render
+require_once CORE_DIR . '/forms.php';
 require_once BASE_DIR . '/app/models.php';
 require_once 'forms.php';
 require_once 'filters.php';
 
+// use \core\forms as core\forms;
 use \models as models;
 use \forms as forms;
 use \filters as filters;
@@ -17,20 +19,38 @@ use \filters as filters;
 
 function index($request) {
 
-    models\Manufacturer::get_all_objects();
-    $manufacturers = models\Manufacturer::make_query();
+    $manufacturers = new models\Manufacturer;
+    $manufacturers = $manufacturers->get_objects()->make_query();
 
     return render('index.html', ['manufacturers' => $manufacturers]);
 }
 
 function products($request ) {
 
-    models\Product::get_all_objects();
-     //применяем фильтры 
-    // $products = filters\more_less_filter($products, 'min', '>'); //
-    // $products = filters\more_less_filter($products, 'max', '<');
-    // $products = filters\checkboxes_filter($products, 'years');
-    // $products = filters\options_filter($products, 'equipment_type');
+    $products = new models\Product;
+    $products->get_objects();
+
+    // генерируем часть форм
+    $M_form = new \core\forms\SelectForm(new models\Manufacturer, 'manufacturer', 'Все');
+    $ET_form = new \core\forms\SelectForm(new models\Equipmenttype, 'equipment_type', 'Все');
+
+    $req = $_REQUEST;
+    //применяем фильтры 
+    if (isset($_REQUEST['min']))
+        $products->filter('price', '>=', $_REQUEST['min']);
+
+    if (isset($_REQUEST['max']))
+        $products->filter('price', '<=', $_REQUEST['max']);
+
+    if (isset($_REQUEST[$ET_form->req_name])  && $_REQUEST[$ET_form->req_name] != $ET_form->default)
+        $products->filter('equipmenttype', '=', $_REQUEST[$ET_form->req_name]);
+
+    if (isset($_REQUEST[$M_form->req_name]) && $_REQUEST[$M_form->req_name] != $M_form->default)
+        $products->filter('manufacturer', '=', $_REQUEST[$M_form->req_name]);
+
+    if (isset($_REQUEST['years']) && is_array($_REQUEST['years']))
+        $products->filter('year', 'in', $_REQUEST['years']);
+
     
     // извлекаем часть запроса, чтобы потом использовать в пагинации 
     $query = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '';
@@ -42,7 +62,7 @@ function products($request ) {
     
     // обЪекты закрепляются к определнной странице
     $products_per_page = 5; 
-    $pages = ceil( models\Product::get_countNmake_query()/$products_per_page );
+    $pages = ceil( $products->get_current_count__make_query()/$products_per_page );
     isset($_REQUEST['page']) ? $page = $_REQUEST['page'] : $page = 1; //по умолчанию первая страница
     
     if ( !isset($_REQUEST['page']) || !is_numeric($page) ) { // проверка полуенных данных на существование и является ли целым числом
@@ -53,8 +73,8 @@ function products($request ) {
         $page = ceil($_REQUEST['page']);
     }
 
-    models\Product::limit($products_per_page*($page - 1), $products_per_page);
-    $products = models\Product::make_query();
+    $products->limit($products_per_page*($page - 1), $products_per_page);
+    $products = $products->make_query();
 
     function pagination($products_per_page, $page, $pages, $query) 
     {   
@@ -96,18 +116,20 @@ function products($request ) {
          'pagination' => $pagination,
          'price_form' => forms\price_form(),
          'years_form' => forms\years_form(),
-         'equipment_type_form' => forms\equipment_type_form(),
-         'manufacturer_form' => forms\manufacturer_form(),
+         'equipment_type_form' => $M_form->form(),
+         'manufacturer_form' => $ET_form->form()
     ]);
 }
 
 function product($request) {
     
-    $id_from_request = $request['product_id'];
-    models\Product::get_all_objects($id_from_request);
-    $product = models\Product::make_query()[0];
+    $id_from_request = $request['product_id']; // id из запроса
+    $columns_with_namesNvalues = [ // получаем foreign поля
+            'manufacturer' => ['name']
+    ];
 
-    if (!$product) die('нет запрашиваемой информации 404'); 
+    $product = new models\Product;
+    $product = $product->get_object_or_404($columns_with_namesNvalues, $id_from_request);
 
     return render('product.html', ['product' => $product]);
 }
@@ -115,8 +137,8 @@ function product($request) {
 
 function goodstypes($request) {
 
-    models\Equipmenttype::get_all_objects();
-    $equipmenttypes = models\Equipmenttype::make_query();
+    $equipmenttypes = new models\Equipmenttype;
+    $equipmenttypes = $equipmenttypes->get_objects()->make_query();
 
     return render('goodstypes.html', ['equipmenttypes' => $equipmenttypes]);
 }
