@@ -3,5 +3,6 @@ core/composer
 core/cache
 
 examples.txt
+index.php
 
 media/*
