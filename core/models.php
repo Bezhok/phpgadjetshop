@@ -8,7 +8,7 @@ namespace basemodels;
 *
 */
 class BaseModel {
-    private static $pdo, $query, $values;
+    private static $pdo;
 
     public function __construct()
     {
@@ -16,6 +16,8 @@ class BaseModel {
         $this->table_name = strtolower($this->table_name);
 
         $this->values = [];
+        $this->empty_fields = [];
+        $this->errors = false;
     }
 
     public static function plug_pdo($pdo)
@@ -45,42 +47,45 @@ class BaseModel {
         }
         if ($id) {
             $this->query .= " WHERE {$this->table_name}.id = ?";
-            $this->values = [$id];
+            $this->values[] = $id;
         }
 
-        try { // выполняем запрос
-            $statement = self::$pdo->prepare($this->query);
-            $statement->execute($this->values);
+         // выполняем запрос
+        $statement = self::$pdo->prepare($this->query);
+        $statement->execute($this->values);
 
-            $object = $statement->fetchAll(\PDO::FETCH_ASSOC);
-            if ($object) return $object[0];
-            else header('Location: /404');
-        } catch (PDOException $e) {
-            echo 'Неправильно введены данные';
-            echo $e->getMessage();
-        }  
+        $object = $statement->fetch();
+
+        if ($object) return $object;
+        else header('Location: /404');
+
+ 
     }
+
+    public function get_column__make_query($column)
+    {
+        $query = "SELECT $column FROM $this->table_name";
+
+        // выполняем запрос
+        $statement = self::$pdo->prepare($query);
+        $statement->execute();
+        return $statement->fetchAll(); // получаем значение
+    }
+
     public function add_object(array $fields) 
     {
         // получаем значения и ключи списка и преобразуем в sql запрос
-        if ($this->fields_check($fields)) { // проверяем
-            $fields = $this->fields;
-            // echo $fields;
+        if (!$this->errors) { // проверяем
             $keys = array_keys($fields);
             $keys = implode(', ', $keys);
-            $values = array_values($fields);
-            $questions_signs_array = array_fill(0, count($values), '?');
+            $this->values = array_values($fields);
+            $questions_signs_array = array_fill(0, count($this->values), '?');
             $query_questions_signs_for_pdo = implode(', ', $questions_signs_array );
-            $query = "INSERT INTO $this->table_name ($keys) VALUES ( $query_questions_signs_for_pdo )";
-            try { // выполняем запрос
-                $statement = self::$pdo->prepare($query);
-                $statement->execute($values);
-            } catch (PDOException $e) {
-                echo 'Неправильно введены данные';
-                echo $e->getMessage();
-            }        
-        } else {
-            echo 'Неправильно введены данные';
+            $this->query = "INSERT INTO $this->table_name ($keys) VALUES ( $query_questions_signs_for_pdo )";
+
+             // выполняем запрос
+            $statement = self::$pdo->prepare($this->query);
+            $statement->execute($this->values);
         }
     }
 
@@ -99,34 +104,37 @@ class BaseModel {
     {
         $query = "SELECT COUNT(id) FROM $this->table_name";
 
-        try { // выполняем запрос
-            $statement = self::$pdo->prepare($query);
-            $statement->execute();
-            return $statement->fetchAll()[0][0]; // получаем значение
-        } catch (PDOException $e) {
-            echo 'Такой записи нет или указан неверный идентификатор';
-            echo $e->getMessage();
-        }
+        // выполняем запрос
+        $statement = self::$pdo->prepare($query);
+        $statement->execute();
+        return $statement->fetchColumn(); // получаем значение
+
     }
 
     public function get_current_count__make_query()
     {
         $query = preg_replace("#SELECT(.)+FROM#", "SELECT COUNT({$this->table_name}.id) FROM", $this->query); // опасно
 
-        try { // выполняем запрос
-            $statement = self::$pdo->prepare($query);
-            // echo $query;
-            $statement->execute($this->values);
-            return $statement->fetchAll()[0][0]; // получаем значение
-        } catch (PDOException $e) {
-            echo 'Такой записи нет или указан неверный идентификатор';
-            echo $e->getMessage();
-        }
+        // выполняем запрос
+        $statement = self::$pdo->prepare($query);
+        $statement->execute($this->values);
+        return $statement->fetchColumn(); // получаем значение
+
+    }
+
+    public function describe_table__make_query()
+    {
+        $query = "DESCRIBE $this->table_name";
+
+        // выполняем запрос
+        $statement = self::$pdo->prepare($query);
+        $statement->execute($this->values);
+        return $statement->fetchAll(\PDO::FETCH_ASSOC); // получаем значение
     }
 
     public function filter($column, string $sign, $value)
     {
-        $column = htmlspecialchars($column);
+        $column = str_replace(' ', '', $column);
         $comparisons = ['<', '<=', '>', '>=', '='];
         $statements = ['in'];
 
@@ -178,20 +186,22 @@ class BaseModel {
 
     public function make_query()
     {   
-        try { // выполняем запрос
-            $statement = self::$pdo->prepare($this->query);
-            $statement->execute($this->values);
-            return $statement->fetchAll(\PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            echo 'Такой записи нет или указан неверный идентификатор';
-            echo $e->getMessage();
-        }
+        // выполняем запрос
+        $statement = self::$pdo->prepare($this->query);
+        $statement->execute($this->values);
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    private function fields_check(array $fields)
+    public function fields_check(array $fields) // проверяем введенные данные(все ли обязательные поля заполнены)
     {
-        if ( !array_diff(array_keys($fields), $this->mandatory_fields()) ) $this->fields = $fields;
-        else false;
+        $this->mandatory_fields_names = array_keys($this->mandatory_fields);
+        if ( !array_diff(array_keys($fields), $this->mandatory_fields_names)) {
+            $this->fields = $fields;
+            $this->errors = false;
+
+        } else {
+            $this->errors = true;
+        }
     }
 
     private function foreign_colums_query()  // test. dangerous. sql injections
