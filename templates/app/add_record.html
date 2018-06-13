@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+<style>
+.errors input, .errors select, .errors textarea {
+    border: 1px solid #ba2121;
+}
+.errornote {
+    font-size: 14px;
+    font-weight: 700;
+    display: block;
+    padding: 10px 12px;
+    margin: 0 0 10px 0;
+    color: #ba2121;
+    border: 1px solid #ba2121;
+    border-radius: 4px;
+    background-color: #fff;
+    background-position: 5px 12px;
+}
+.success {
+    display: block;
+    font-weight: 400;
+    font-size: 13px;
+    padding: 10px 10px 10px 65px;
+    margin: 0 0 10px 0;
+    background: #dfd 40px 12px;
+    /*background-size: 16px auto;*/
+    color: #333;
+}
+td {
+    padding-bottom: 10px; 
+    border-bottom: 1px solid black;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+    <form action="">
+        {{ admin_form|raw }}
+    </form>
+{% endblock %}

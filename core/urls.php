@@ -33,11 +33,7 @@ function foreach_urlpattern($urlpatterns, $url) {
             $all_args = [];
             $all_args[] =  url($pattern, $url, 'return args for view'); // добавляем в $args именованные группы
 
-            // if ( isset($pattern[3]) && $pattern[3] ) { // передаем переменные, если массив с ними существует и не пустой
-                // foreach ($pattern[3] as $value) {
-                    // $all_args[] = $value;
-                // }
-            // }
+
             url($pattern, $url)(...$all_args); // массив с передаваемыми view'у аргументами
             break;
         } 

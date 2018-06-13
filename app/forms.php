@@ -7,6 +7,7 @@ require_once BASE_DIR . '/app/models.php';
 use \models as models;
 
 
+
 function price_form() // создаем инпуты для фильтрации по ценам
 { 
     $form = '';
@@ -41,4 +42,3 @@ function years_form() // создаем чекбоксы для фильтрац
 
     return $form;
 }
-
