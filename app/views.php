@@ -6,14 +6,10 @@ require_once CORE_DIR . '/views.php'; //render
 require_once CORE_DIR . '/forms.php';
 require_once BASE_DIR . '/app/models.php';
 require_once 'forms.php';
-require_once 'filters.php';
 
 // use \core\forms as core\forms;
 use \models as models;
 use \forms as forms;
-use \filters as filters;
-
-
 
 
 
@@ -116,8 +112,8 @@ function products($request ) {
          'pagination' => $pagination,
          'price_form' => forms\price_form(),
          'years_form' => forms\years_form(),
-         'equipment_type_form' => $M_form->form(),
-         'manufacturer_form' => $ET_form->form()
+         'equipment_type_form' => $M_form,
+         'manufacturer_form' => $ET_form
     ]);
 }
 
@@ -154,5 +150,9 @@ function about($request) {
 }
 
 function admin($request) {
-    return render('static/gulp/app/admin_sign-in.php', []);
+    $obj = new \models\Product;
+    $form = new \core\forms\Form($obj);
+
+
+    return render('add_record.html', ['admin_form' => $form]);
 }
