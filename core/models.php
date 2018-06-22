@@ -18,6 +18,7 @@ class BaseModel {
         $this->values = [];
         $this->empty_fields = [];
         $this->errors = false;
+        return $this;
     }
 
     public static function plug_pdo($pdo)
@@ -58,8 +59,6 @@ class BaseModel {
 
         if ($object) return $object;
         else header('Location: /404');
-
- 
     }
 
     public function get_column__make_query($column)
@@ -82,7 +81,6 @@ class BaseModel {
             $questions_signs_array = array_fill(0, count($this->values), '?');
             $query_questions_signs_for_pdo = implode(', ', $questions_signs_array );
             $this->query = "INSERT INTO $this->table_name ($keys) VALUES ( $query_questions_signs_for_pdo )";
-
              // выполняем запрос
             $statement = self::$pdo->prepare($this->query);
             $statement->execute($this->values);
@@ -184,24 +182,26 @@ class BaseModel {
         return $this;
     }
 
+    public function order_by($field, $method = 'ASC')
+    {
+        if (strrpos(' ', $field) === false) { // если нет пробелов в названии
+            if ($method == 'ASC' && isset($this->query)){
+                $this->query .= " ORDER BY $field ASC";
+            } elseif ($method == 'DESC') {
+                $this->query .= " ORDER BY $field DESC";
+            }
+        } else {
+            throw new \Exception("В названии поля содержатся пробелы");   
+        }
+        return $this;
+    }
+
     public function make_query()
     {   
         // выполняем запрос
         $statement = self::$pdo->prepare($this->query);
         $statement->execute($this->values);
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
-    public function fields_check(array $fields) // проверяем введенные данные(все ли обязательные поля заполнены)
-    {
-        $this->mandatory_fields_names = array_keys($this->mandatory_fields);
-        if ( !array_diff(array_keys($fields), $this->mandatory_fields_names)) {
-            $this->fields = $fields;
-            $this->errors = false;
-
-        } else {
-            $this->errors = true;
-        }
     }
 
     private function foreign_colums_query()  // test. dangerous. sql injections

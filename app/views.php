@@ -59,17 +59,23 @@ function products($request ) {
     // обЪекты закрепляются к определнной странице
     $products_per_page = 5; 
     $pages = ceil( $products->get_current_count__make_query()/$products_per_page );
-    isset($_REQUEST['page']) ? $page = $_REQUEST['page'] : $page = 1; //по умолчанию первая страница
-    
-    if ( !isset($_REQUEST['page']) || !is_numeric($page) ) { // проверка полуенных данных на существование и является ли целым числом
+
+
+    if ( !isset($_REQUEST['page']) || !is_numeric(($_REQUEST['page'])) ) { // проверка полуенных данных на существование и является ли целым числом
         $page = 1;
-    } elseif ($page > $pages) {
-        $page = $pages;
-    } else {
-        $page = ceil($_REQUEST['page']);
+
+    } elseif (isset($_REQUEST['page'])) {
+        $page = $_REQUEST['page'];
+
+        if ($page > $pages) {
+            $page = $pages;
+        } else {
+            if (is_numeric($page)) $page = abs($page);
+            $page = ceil($page);
+        }
     }
 
-    $products->limit($products_per_page*($page - 1), $products_per_page);
+    $products->order_by('id', 'DESC')->limit($products_per_page*($page - 1), $products_per_page);
     $products = $products->make_query();
 
     function pagination($products_per_page, $page, $pages, $query) 
@@ -132,11 +138,26 @@ function product($request) {
 
 
 function goodstypes($request) {
-
     $equipmenttypes = new models\Equipmenttype;
     $equipmenttypes = $equipmenttypes->get_objects()->make_query();
 
-    return render('goodstypes.html', ['equipmenttypes' => $equipmenttypes]);
+    $info = [];
+    foreach ($equipmenttypes as $value) { // минимальная цена, количество товаров
+        $products = new models\Product();
+        $products->get_objects()->filter('equipmenttype', '=', $value['id']);
+        
+        $info[$value['id']]['count'] = $products->get_current_count__make_query();
+        $products = $products->make_query();
+
+        $prices = [];
+        foreach ($products as $product) {
+            $prices[] = $product['price'];
+        }
+        if (!$prices) $prices = [0]; // если у типа товаров нет товаров ставим цену ноль
+        $info[$value['id']]['min_price'] = min($prices);
+    }
+
+    return render('goodstypes.html', ['equipmenttypes' => $equipmenttypes, 'info' => $info]);
 }
 
 
@@ -152,7 +173,6 @@ function about($request) {
 function admin($request) {
     $obj = new \models\Product;
     $form = new \core\forms\Form($obj);
-
 
     return render('add_record.html', ['admin_form' => $form]);
 }

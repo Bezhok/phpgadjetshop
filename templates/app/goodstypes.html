@@ -11,8 +11,8 @@
                         <section class="main_nav_thing_image"><img src="{{ type.image }}" alt="{{ type.name }}"/></section>
                         <section class="main_nav_thing_item">
                             <section class="main_nav_thing_title">{{ type.name }}</section>
-                            <section class="main_nav_thing_discription">5000 товаров
-                                <br />от 200рб</section>
+                            <section class="main_nav_thing_discription">{{ info[type.id]['count'] }} товаров
+                                <br />от {{ info[type.id]['min_price'] }}рб</section>
                         </section>
                     </section>
                 </a>

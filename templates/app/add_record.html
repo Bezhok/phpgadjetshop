@@ -36,7 +36,7 @@ td {
 {% endblock %}
 
 {% block content %}
-    <form action="">
+    <form enctype="multipart/form-data" method="POST">
         {{ admin_form|raw }}
     </form>
 {% endblock %}

@@ -29,11 +29,8 @@ function foreach_urlpattern($urlpatterns, $url) {
 
     foreach ($urlpatterns as $pattern) { // перебираем urls
         if (url($pattern, $url, 'return true if match')) { // проверяем совпдает ли url с существующеми
-        
             $all_args = [];
             $all_args[] =  url($pattern, $url, 'return args for view'); // добавляем в $args именованные группы
-
-
             url($pattern, $url)(...$all_args); // массив с передаваемыми view'у аргументами
             break;
         } 
@@ -42,14 +39,11 @@ function foreach_urlpattern($urlpatterns, $url) {
 
 
 
-function convert_url($url, $pattern='#\{[-\w\d_]+\}#') // преобразуем шаблон вида view/{str1}/{str2} в #^view/(?P<str1>[-\w\d_]+)/(?P<str2>[-\w\d_]+)/*$#
+function convert_url($url, $pattern='#\{[-\w\d_]+\}#u') // преобразуем шаблон вида view/{str1}/{str2} в #^view/(?P<str1>[-\w\d_]+)/(?P<str2>[-\w\d_]+)/*$#
 {
-
     preg_match_all($pattern, $url, $matches);
     $matches_count = count($matches[0]);
-
     for ($i=1; $i <= $matches_count ; $i++) { 
-
         $url = preg_replace_callback(
             $pattern, 
             function($matches) {
@@ -61,11 +55,8 @@ function convert_url($url, $pattern='#\{[-\w\d_]+\}#') // преобразуем
             1
             
         );
-
     }
-
     $url =  '#^' . $url . '/*$#';   
-
     return $url;   
 }
 

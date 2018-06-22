@@ -1,3 +1,15 @@
 <?php
 
-namespace core\validate;
+namespace core\validator;
+
+/**
+* 
+*/
+class Validator
+{
+    
+    function __construct(argument)
+    {
+        # code...
+    }
+}
