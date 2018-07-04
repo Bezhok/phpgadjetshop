@@ -1,5 +1,5 @@
 <?php
-namespace basemodels;
+namespace core\models;
 /**
    Базовая модель
    Простейшая реализация ORM
@@ -38,7 +38,7 @@ class BaseModel {
         return $this;
     }
 
-    public function get_object_or_404(array $foreign_colums = [], string $id = '')
+    public function get_object(string $id, array $foreign_colums = [])
     { 
         if ($foreign_colums) {
             $this->foreign_colums = $foreign_colums;
@@ -46,10 +46,9 @@ class BaseModel {
         } else { 
             $this->query = "SELECT * FROM $this->table_name";
         }
-        if ($id) {
-            $this->query .= " WHERE {$this->table_name}.id = ?";
-            $this->values[] = $id;
-        }
+
+        $this->query .= " WHERE {$this->table_name}.id = ?";
+        $this->values[] = $id;
 
          // выполняем запрос
         $statement = self::$pdo->prepare($this->query);
@@ -57,8 +56,7 @@ class BaseModel {
 
         $object = $statement->fetch();
 
-        if ($object) return $object;
-        else header('Location: /404');
+        return $object;
     }
 
     public function get_column__make_query($column)
@@ -87,15 +85,51 @@ class BaseModel {
         }
     }
 
-    public function edit_object($fields) // не работает 
-    {
-        $query = "UPDATE $this->table_name SET ";
+    public function edit_object($fields, $id) // не работает 
+    {   
+        // получаем значения и ключи списка и преобразуем в sql запрос
+        if (!$this->errors) { // проверяем
+            $keys = array_keys($fields);
+            $this->values = array_values($fields);
+
+            $set_keysNvalues = '';
+            $count = count($keys);
+            for ($i=0; $i < $count; $i++) {
+                $set_keysNvalues .= " {$keys[$i]} = ?";
+                if ($i + 1 < $count) {
+                    $set_keysNvalues .= ","; // не добавляем, если последняя итерация
+                }
+            }
+
+            $this->query = "UPDATE $this->table_name SET $set_keysNvalues WHERE id = $id";
+             // выполняем запрос
+            $statement = self::$pdo->prepare($this->query);
+            $statement->execute($this->values);
+        }
     }
 
     public function del_object($id)
     {
         $this->query = "DELETE FROM $this->table_name WHERE id = ?";
-        $this->values = $id;
+        $this->values = [$id];
+        // выполняем запрос
+        $statement = self::$pdo->prepare($this->query);
+        $statement->execute($this->values);
+    }
+
+    public function del_objects($ids)
+    {
+        $questions_signs_array = array_fill(0, count($ids), '?');
+        $query_questions_signs_for_pdo = implode(', ', $questions_signs_array );
+
+        if ($ids) {
+            $this->query = "DELETE FROM $this->table_name WHERE id IN ( $query_questions_signs_for_pdo )";
+            $this->values = $ids;
+            // выполняем запрос
+            $statement = self::$pdo->prepare($this->query);
+            $statement->execute($this->values);       
+        }
+           
     }
 
     public function get_total_count__make_query()
@@ -127,7 +161,7 @@ class BaseModel {
         // выполняем запрос
         $statement = self::$pdo->prepare($query);
         $statement->execute($this->values);
-        return $statement->fetchAll(\PDO::FETCH_ASSOC); // получаем значение
+        return $statement->fetchAll(); // получаем значение
     }
 
     public function filter($column, string $sign, $value)
@@ -201,7 +235,7 @@ class BaseModel {
         // выполняем запрос
         $statement = self::$pdo->prepare($this->query);
         $statement->execute($this->values);
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        return $statement->fetchAll();
     }
 
     private function foreign_colums_query()  // test. dangerous. sql injections

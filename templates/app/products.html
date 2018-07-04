@@ -55,10 +55,20 @@
         <section class="shema_line"></section>
         <section id="schema_all_products_pagination">
             
-            {% for i in pagination %}
-                {{ i|raw }}
-            {% endfor %}
+            {% if pagination.has_previous %}
+                <a id='pagination_preview' href="?page={{ pagination.previous_page_number }}{{ query }}"><section class="pagination_nextNpre" onclick="id='pagination_activate'">Предыдущая</section></a>
+            {% endif %}
 
+            {% if pagination.pages > 1 %}
+                {% for num in pagination.pagination_list %}
+                    <a href="?page={{ num }}{{ query }}"><section class="pagination_number{% if num == pagination.page %} pagination_activate {% endif %}" onclick="this.id='pagination_activate'" >{{ num }}</section></a>
+                {% endfor %}
+            {% endif %}
+
+            {% if pagination.has_next %}
+                <a id='pagination_next' href="?page={{ pagination.next_page_number }}{{ query }}"><section class="pagination_nextNpre" onclick="id='pagination_activate'">Следующая</section></a>
+            {% endif %}
+            
             <section id="pagination_nextNpre_section"></section> <!-- for js -->
             <script type='text/javascript' src="{{ static('javascript/products_pagination.js') }}"></script>
 

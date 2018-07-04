@@ -1,0 +1,28 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block content %}
+
+    <div class="container-fluid admin-container"">
+        <div class="row admin-row">
+            <div class="sidebar ">
+                <div class="navbar">
+                    <ul class="nav flex-column">
+                        {% for model_name in models_names %}
+                            <li class="nav-item">
+                            <a class="nav-link" href="{{ url('entries', model_name.table_name ) }}">{{ model_name.verbose_name }}</a>
+                            </li>
+                        {% endfor %}                      
+                    </ul>
+                    <div><a href="{{ url('index') }}">Главная</a></div>
+                    <div><a href="{{ url('register') }}">Зарегистрироваться</a></div>
+                    <div><a href="{{ url('logout') }}">Выйти</a></div>
+                </div>
+            </div>
+            <div class="col">
+                {% block panel_content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

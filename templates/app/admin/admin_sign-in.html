@@ -1,0 +1,17 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block content %}
+
+    <article class="container admin-sigin">
+
+            <div class="admin-sigin__row">
+                <div class="admin-sigin__title">Вход</div>
+                <form enctype="multipart/form-data" method="POST">
+                    {{ admin_form|raw }}
+                    <button type="submit" class="btn btn-lg btn-block btn-primary mt-4" name="_save">Войти</button>
+                </form>
+            </div>
+
+    </article>
+
+{% endblock %}

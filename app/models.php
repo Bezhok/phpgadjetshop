@@ -1,46 +1,50 @@
 <?php
-
 namespace models;
 
-
-require_once CORE_DIR . '/models.php';
-
+use \core\models\BaseModel;
 
 /*
 Допустимые типы: varchar, text, option, image, number
-если добавляете поле id, то уберите автоинкремент
+если добавляете поле id, то уберите автоинкремент в bd
 */
-class Product extends \basemodels\BaseModel
+class Product extends BaseModel
 {
-
    public $mandatory_fields = [
        // 'id' => ['type' => 'number'],
-       'year' => ['type' => 'number', 'verbose_name' => 'Цена'],
-       'manufacturer' => ['type' => 'option', 'foreign' => '\models\Manufacturer'],
-       'title' => ['type' => 'varchar'],
-       'price' => ['type' => 'number'],
-       'description' => ['type' => 'text'],
-       'equipmenttype' => ['type' => 'option', 'foreign' => '\models\Equipmenttype'],
-       'main_image' => ['type' => 'image', 'upload_to' => 'media_images'],
+       'year' => ['type' => 'number', 'verbose_name' => 'Год'],
+       'manufacturer' => ['type' => 'option', 'foreign' => '\models\Manufacturer', 'verbose_name' => 'Производитель'],
+       'title' => ['type' => 'varchar', 'verbose_name' => 'Название'],
+       'price' => ['type' => 'number', 'verbose_name' => 'Цена'],
+       'description' => ['type' => 'text', 'verbose_name' => 'Описание'],
+       'equipmenttype' => ['type' => 'option', 'foreign' => '\models\Equipmenttype', 'verbose_name' => 'Тип товара'],
+       'main_image' => ['type' => 'image', 'upload_to' => 'media_images', 'verbose_name' => 'Картинка'],
    ];
-
+   public $verbose_name = 'Продукт';
 }
 
-class Manufacturer extends \basemodels\BaseModel
+class Manufacturer extends BaseModel
 {
-
     public $mandatory_fields = [
         'name' => ['type' => 'varchar'],
         'image' => ['type' => 'image', 'upload_to' => 'media']
     ];
-
+    public $verbose_name = 'Производители';
 }
 
-class Equipmenttype extends \basemodels\BaseModel
+class Equipmenttype extends BaseModel
 {
-
     public $mandatory_fields = [
         'name' => ['type' => 'varchar'],
         'image' => ['type' => 'image', 'upload_to' => 'ms']
+    ];
+    public $verbose_name = 'Типы товаров';
+}
+
+class Auth_User extends BaseModel
+{
+    public $mandatory_fields = [
+        'username' => ['type' => 'varchar', 'verbose_name' => 'Логин'],
+        'password' => ['type' => 'password', 'verbose_name' => 'Пароль'],
+        'email' => ['type' => 'varchar', 'verbose_name' => 'Почта'],
     ];
 }

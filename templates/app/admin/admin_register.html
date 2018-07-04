@@ -1,0 +1,18 @@
+{% extends 'admin/admin_base.html' %}
+
+{% block content %}
+
+    <article class="container admin-sigin">
+
+            <div class="admin-sigin__row">
+                <div class="admin-sigin__title">Регистрация</div>
+                <form enctype="multipart/form-data" method="POST">
+                    {{ admin_form|raw }}
+                    <a href="{{ url('admin') }}">Админ панель</a>
+                    <button type="submit" class="btn btn-lg btn-block btn-primary mt-4" name="_save">Зарегистрироваться</button>
+                </form>
+            </div>
+            
+    </article>
+
+{% endblock %}

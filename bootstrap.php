@@ -1,28 +1,32 @@
 <?php
 
-require_once 'settings.php';
+require_once BASE_DIR . '/settings.php';
+require_once BASE_DIR . '/app/urls.php';
 require_once CORE_DIR . '/models.php';
-
-// таблица 
-
-$opt = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    // PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-];
-
-$pdo = new \PDO('mysql:host=php;dbname=phpmyshop_db', 'root', '', $opt);
-
-
-basemodels\BaseModel::plug_pdo($pdo); // settings
 
 
 require_once CORE_DIR . '/urls.php';
-require_once 'app/urls.php';
-require_once 'app/views.php';
+require_once CORE_DIR . '/views.php';
+require_once CORE_DIR . '/forms.php';
+require_once CORE_DIR . '/pagination.php';
+require_once CORE_DIR . '/admin.php';
 
-use core\urls as urls;
+
+require_once BASE_DIR . '/app/models.php';
 
 
-urls\foreach_urlpattern($urlpatterns, $url);
+require_once TWIG_EXTENSIONS_DIR . '/urls.extension.php';
+require_once TWIG_EXTENSIONS_DIR . '/static_files.extension.php';
+require_once BASE_DIR . '/app/views.php';
+require_once BASE_DIR . '/app/admin.php';
+require_once BASE_DIR . '/app/views_admin.php';
+require_once BASE_DIR . '/app/forms.php';
 
+
+
+$pdo = new \PDO("mysql:host=$db_host;dbname=$db_name", $db_login, $db_password, $db_options);
+core\models\BaseModel::plug_pdo($pdo);
+
+
+$view = new core\urls\Url($urlpatterns);
+$view->call_view();

@@ -1,10 +1,11 @@
 <?php
-
 namespace Twig_Extensions;
 
+require_once CORE_DIR . '/urls.php';
 
 class Urls_Twig_Extension extends \Twig_Extension
 {
+    use \core\urls\UrlTrait;
     public function __construct($urlpatterns)
     {
         $this->urlpatterns = $urlpatterns;
@@ -16,44 +17,4 @@ class Urls_Twig_Extension extends \Twig_Extension
             new \Twig_SimpleFunction('url', [$this, 'url']),
         ];
     }
-
-    public function url($url_name, ...$parameters) // 
-    {
-        $urlpatterns = $this->urlpatterns;
-        $urls_path_patterns = [];
-        foreach ($urlpatterns as $pattern) { // извлекаем урлы
-            $urls_path_patterns[$pattern[2]] = $pattern[0];
-        }
-
-        if (isset($urls_path_patterns[$url_name])) {
-
-            $pattern = '#\{[-\w\d_]+\}#';
-            $url_regex = $urls_path_patterns[$url_name];
-
-            preg_match_all($pattern, $url_regex, $matches);
-            $matches_count = count($matches[0]);
-
-            if ($matches_count == count($parameters)) {
-
-                $url_regex = $urls_path_patterns[$url_name]; // извлекаем шаблон урлов
-                foreach ($parameters as $parameter) { // подставляем значения
-                    $url_regex = preg_replace($pattern, $parameter, $url_regex, 1);
-                }
-                return '/' . $url_regex;
-
-            } elseif (!$matches_count && !count($parameters)) {
-
-                $url_regex = $urls_path_patterns[$url_name]; // извлекаем шаблон урлов
-                return '/' . $url_regex;
-
-            } else {
-                throw new \Exception('Arguments more or less than expected');
-                
-            }
-
-        } else {
-            throw new \Exception('This url doesn\'t exist');
-        }
-    }
-
 }

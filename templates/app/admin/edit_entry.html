@@ -1,0 +1,13 @@
+{% extends 'admin/admin_panel_base.html' %}
+
+{% block panel_content %}
+
+    <form enctype="multipart/form-data" method="POST">
+        {{ form|raw }}
+        <div>
+            <button type="submit" class="btn btn-lg btn-block btn-primary mt-4" name="_addanother">Сохранить и добавить другой объект</button>
+            <button type="submit" class="btn btn-lg btn-block btn-primary mt-4" name="_save">Сохранить</button>
+        </div>
+    </form>
+
+{% endblock %}
