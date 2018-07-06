@@ -165,14 +165,14 @@ class BaseModel {
     }
 
     public function filter($column, string $sign, $value)
-    {
+    {   
+        $sign = strtoupper($sign);
         $column = str_replace(' ', '', $column);
         $comparisons = ['<', '<=', '>', '>=', '='];
-        $statements = ['in'];
 
-        if (in_array($sign, $comparisons) && is_numeric($value)) {
+        if (in_array($sign, $comparisons) && (is_numeric($value) || $sign = '=')) {
 
-            $value = intval($value);
+            if (is_numeric($value)) $value = intval($value); // чтобы сравнение проиходило по числу, а не по строке
 
             if (strpos($this->query, ' WHERE ') === false) { // если where не применялось
                 $this->query .= " WHERE {$this->table_name}.{$column} "; // добавляем
@@ -184,9 +184,7 @@ class BaseModel {
             $this->query .= $condition;
             $this->values[] = $value;
 
-        } elseif (in_array($sign, $statements)) {
-            $sign = strtoupper($sign);
-
+        } elseif ($sign == 'IN') {
             $questions_signs_array = array_fill(0, count($value), '?');
             $query_questions_signs_for_pdo = implode(', ', $questions_signs_array );
 
@@ -199,6 +197,8 @@ class BaseModel {
 
             $this->query .= $condition;
             $this->values = array_merge($this->values, $value);
+        } else {
+            throw new \Exception("Непоняный символ или неправильно применен.");
         }
 
         return $this;
@@ -225,7 +225,7 @@ class BaseModel {
                 $this->query .= " ORDER BY $field DESC";
             }
         } else {
-            throw new \Exception("В названии поля содержатся пробелы");   
+            throw new \Exception("В названии поля содержатся пробелы");
         }
         return $this;
     }

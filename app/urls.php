@@ -3,7 +3,7 @@
 [регулярное выражение, представление, название урл]
 */
 $urlpatterns = [
-    ['index', 'views\index', 'index'],
+    ['', 'views\index', 'index'],
     ['products', 'views\products', 'products'],
     ['product/{product_id}', 'views\product', 'product'],
     ['goodstypes', 'views\goodstypes', 'goodstypes'],

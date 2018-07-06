@@ -3,7 +3,7 @@ namespace core\pagination;
 
 class Pagination
 {
-    public function __construct($obj, $objs_per_page = 5, $max_count_on_page = 7)
+    public function __construct($obj, $objs_per_page, $max_count_on_page)
     {
         // обЪекты закрепляются к определнной странице
         $this->pages = ceil($obj->get_current_count__make_query() / $objs_per_page);

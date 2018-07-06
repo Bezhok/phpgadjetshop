@@ -52,16 +52,17 @@ function entries($request)
         $model_name = $models_names[$model_lower_name_from_request]['class_name'];
     }
 
+    $opertaion_log = '';
     if ( isset($_POST['csrf_token']) && $_POST['csrf_token'] == $_SESSION['csrf_token']) { // верификация пройдена [редирект на админ]
         if (isset($_POST['_delete']) && isset($_POST['entries'])) {
             $ids = $_POST['entries'];
             $del = new $model_name;
             try {
                 $del->del_objects($ids);
-                echo 'записи удалены';
+                $opertaion_log = 'Записи удалены.';
             } catch (\PDOException $e) {
                 if ($e->getCode() == 23000) {
-                    echo 'нельзя удалить. этот обЪект связан с другими. сначала удалите их.';
+                    $opertaion_log = 'Нельзя удалить. Этот объект(ы) связан с другими. Сначала удалите их.';
                 } else {
                     throw new \PDOException; 
                 }
@@ -80,7 +81,8 @@ function entries($request)
         'models_names' => $models_names,
         'this_model_name' => $model_lower_name_from_request,
         'objs' => $objs,
-        'pagination' => $pagination
+        'pagination' => $pagination,
+        'opertaion_log' => $opertaion_log
     ]);
 }
 

@@ -1,9 +1,10 @@
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+
+
 RewriteEngine On
 
+RewriteCond %{REQUEST_FILENAME} !/static/.*
+RewriteCond %{REQUEST_FILENAME} !/media/.*
 
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-
-#RewriteRule ^static$ static/ [L]
-#RewriteRule media media/ [L]
 RewriteRule .* bootstrap.php [L]

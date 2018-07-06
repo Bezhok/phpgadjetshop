@@ -1,4 +1,4 @@
-static/gulp
+templates/app/admin/gulp
 core/composer
 core/cache
 

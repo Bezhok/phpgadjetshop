@@ -2,6 +2,7 @@
 namespace core\forms;
 
 use core\urls\Url;
+use function core\csrf_token\csrf_token;
 
 class Form
 {
@@ -72,7 +73,7 @@ class Form
             $this->add_form_block();
         }
         $this->upload_files();
-        $this->form .= $this->csrf_token();
+        $this->form .= csrf_token();
         $this->upload_data();
     }
 
@@ -207,7 +208,7 @@ class Form
 
                 case 'password':
                     $this->form .= "<input class='$this->input_style' type='password' name='$this->obj_field_name' '>";
-                    if (isset($this->obj_params['repeat_password'])) {
+                    if (isset($this->obj_params['repeat_password'])) { // если есть проверка пароля
                         $this->form .= "<label for=''>Повторите пароль</label><input class='$this->input_style' type='password' name='{$this->obj_field_name}_repeat'>";  
                     }
                     break;
@@ -261,11 +262,11 @@ class Form
             $str = preg_replace('#[^-a-z0-9_\.]#u', '_', $str);
             return $str;
         }
-/************************************************** сделать нормальной рандом с символами ***********************************************************************/
+
         function check_name($dest, $filename, $directory, $file_tmp_name) // изменяем название, если такое существует
         {
-            if (file_exists($dest) && hash_file('md5', $dest) != hash_file('md5', $file_tmp_name)) { // если файл с таким названием существует, то переименовываем. если нет, то перезаписываем
-                $replacement = mt_rand(120202, 34024230423);
+            if (file_exists($dest) && hash_file('md5', $dest) != hash_file('md5', $file_tmp_name)) { // если файл с таким названием существует и загружен не такоой же, то переименовываем. в противном случае перезаписываем
+                $replacement = hash('md5', time());
                 $filename = preg_replace('#\.#u', "_$replacement.", $filename, 1);
                 $dest = MEDIA_ROOT . "$directory/" .  $filename;
                 return check_name($dest, $filename, $directory, $file_tmp_name);
@@ -274,7 +275,7 @@ class Form
             }
 
         }
-/**********************************************************************************************************************************/
+
         if ((isset($_REQUEST['_save']) || isset($_REQUEST['_addanother'])) && !$this->obj->errors) { // переименовывание файла, перемещение в директорию и добавления в запрос путя до него
             foreach ($this->files as $v) { // перебираем все
                 $field_name = $v['field_name'];
@@ -283,7 +284,6 @@ class Form
                 } else {
                     $file_path = '';
                 }
-                // print_r($_FILES[$field_name]);
 
                 if ($_FILES[$field_name]['error'] && !empty($this->POST[$field_name]) && file_exists($file_path)) { // если изображение не загруено, но его имя отправлено и такой файл существует
                     $this->POST[$field_name] = $this->POST[$field_name];
@@ -354,15 +354,6 @@ class Form
         } 
         header("Location: ". $url);
         exit();
-    }
-/******************************** разобраться с токеном (дублируется в представлении) ****************************************/
-    private function csrf_token()
-    {
-        $token = md5(SECRET_KEY . session_id());
-        $csrf_token = "<input type='hidden' name='csrf_token' value='$token'>";
-        $_SESSION['csrf_token'] = $token;
-
-        return $csrf_token; 
     }
 
     public function __toString()

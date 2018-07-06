@@ -1,11 +1,11 @@
 <?php
 namespace Twig_Extensions;
 
-require_once CORE_DIR . '/urls.php';
+use core\urls\UrlTrait;
 
 class Urls_Twig_Extension extends \Twig_Extension
 {
-    use \core\urls\UrlTrait;
+    use UrlTrait;
     public function __construct($urlpatterns)
     {
         $this->urlpatterns = $urlpatterns;

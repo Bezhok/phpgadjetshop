@@ -10,7 +10,6 @@ use \core\models\BaseModel;
 class Product extends BaseModel
 {
    public $mandatory_fields = [
-       // 'id' => ['type' => 'number'],
        'year' => ['type' => 'number', 'verbose_name' => 'Год'],
        'manufacturer' => ['type' => 'option', 'foreign' => '\models\Manufacturer', 'verbose_name' => 'Производитель'],
        'title' => ['type' => 'varchar', 'verbose_name' => 'Название'],

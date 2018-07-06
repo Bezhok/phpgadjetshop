@@ -1,0 +1,60 @@
+.admin-sigin {
+  margin-top: 40px;
+}
+
+.admin-sigin__row {
+  max-width: 370px;
+  margin: auto;
+}
+
+.admin-sigin__title {
+  font-weight: bold;
+  font-size: 25px;
+  margin-bottom: 5px;
+}
+
+.sidebar {
+  background: #eee;
+  width: 180px;
+  max-width: 300px;
+  min-width: 150px;
+}
+
+.admin-nav {
+  width: 100%;
+}
+
+
+.errors {
+  border: 1px solid #ba2121;
+}
+.errornote {
+    font-size: 14px;
+    font-weight: 700;
+    display: block;
+    color: #ba2121;
+    border-radius: 4px;
+    background-position: 5px 12px;
+}
+.success {
+    display: block;
+    font-weight: 400;
+    font-size: 13px;
+    padding: 10px 10px 10px 65px;
+    margin: 0 0 10px 0;
+    background: #dfd 40px 12px;
+    color: #333;
+}
+
+.addlink {
+    display: block;
+    /*float: left;*/
+    padding: 3px 12px;
+    background: #999;
+    font-weight: 400;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #fff;
+    border-radius: 15px;
+}

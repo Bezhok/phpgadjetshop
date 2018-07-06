@@ -2,6 +2,7 @@
 namespace forms;
 
 use core\forms\Form;
+use core\urls\Url;
 use models\Auth_User;
 
 function price_form() // создаем инпуты для фильтрации по ценам
@@ -43,7 +44,7 @@ class AdminForm extends Form
 {
     public function __construct()
     {
-        $this->obj = new Auth_User;
+        $this->obj = new Auth_User();
 
         $this->obj_fields = []; // нужные поля для залогирвания
         $this->obj_fields['username'] = $this->obj->mandatory_fields['username'];
@@ -77,14 +78,11 @@ class AdminForm extends Form
     }
 }
 
-
-
-/***************************************************************** логины и электронные почты не должны повторяться внедрить проверку **********************************************************************/
 class RegisterForm extends Form
 {
     public function __construct()
     {
-        $this->obj = new Auth_User;
+        $this->obj = new Auth_User();
 
         $this->obj_fields = $this->obj->mandatory_fields;
         $this->obj_fields['password']['repeat_password'] = true;
@@ -94,13 +92,36 @@ class RegisterForm extends Form
 
     protected function upload_data_fill()
     {
-        $this->success_log = '<p class="success">Запись была успешно добавлена. Вы можете отредактировать ее еще раз ниже.</p>';
-        $this->method_name = 'add_object';
-        $this->method_params = [$this->POST];
-        parent::upload_data_fill();
+        $this->log = '';
+
+        $objects = new Auth_User();
+        $objects = $objects->get_objects()->filter('username', '=', $this->POST['username'])->make_query();
+        if ($objects) $this->log .= '<p style="color:red">Такой логин уже существует.</p>';
+
+        $objects = new Auth_User();
+        $objects = $objects->get_objects()->filter('email', '=', $this->POST['email'])->make_query();
+        if ($objects) $this->log .= '<p style="color:red">Такая электронная почта уже существует.</p>';
+
+        if (!$this->log) { // если все ок
+            $this->success_log = '<p class="success">Запись была успешно добавлена. Вы можете отредактировать ее еще раз ниже.</p>';
+            $this->method_name = 'add_object';
+            $this->method_params = [$this->POST];
+
+            $method_name = $this->method_name;
+            $method_params = $this->method_params;
+
+            $this->obj->$method_name(...$method_params);
+            $this->log = $this->success_log;
+
+            global $urlpatterns;
+            $url = new Url($urlpatterns);
+            $url = $url->url('admin');
+
+            header("Location: ". $url);
+            exit();
+        }
     }
 }
-/*******************************************************************************************************************************************************************************/
 
 class AddObjectForm extends Form
 {
@@ -117,6 +138,7 @@ class AddObjectForm extends Form
         $this->success_log = '<p class="success">Запись была успешно добавлена. Вы можете отредактировать ее еще раз ниже.</p>';
         $this->method_name = 'add_object';
         $this->method_params = [$this->POST];
+        
         parent::upload_data_fill();
     }
 }

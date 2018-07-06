@@ -5,6 +5,7 @@
     <form method="POST">
         <div class="col-4">
             {{ csrf_token|raw }}
+            {{ opertaion_log }}
             <a href="{{ url('add_entry', this_model_name) }}" class="addlink mt-1">Добавить</a>
             <button type="submit"  class="addlink btn btn-lg btn-block btn-dark my-1" name="_delete">Удалить выбранные</button>
         </div>

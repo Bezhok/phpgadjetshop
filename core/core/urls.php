@@ -55,16 +55,21 @@ class Url
 
 
     public function call_view() {
+        $is_url_exist = false;
         foreach ($this->urlpatterns as $pattern) { // перебираем urls
             $alias = $this->convert_alias($pattern[0]);
             if (preg_match($alias, $this->url, $args)) { // проверяем совпдает ли url с существующеми
                 $view_name = $pattern[1];
                 $all_args = [];
                 $all_args[] =  $args; // добавляем в $args именованные группы
+                $is_url_exist = true;
                 $view_name(...$all_args); // массив с передаваемыми view'у аргументами
                 break;
             }
         }
+        if (!$is_url_exist) require_once BASE_DIR . '/templates/app/404.html';
+        exit();
+
     }
 
     private function convert_alias($alias) // преобразуем шаблон вида view/{str1}/{str2} в #^view/(?P<str1>[-\w\d_]+)/(?P<str2>[-\w\d_]+)/*$#

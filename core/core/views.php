@@ -2,6 +2,7 @@
 namespace core\views;
 
 use Twig_Extensions\{Urls_Twig_Extension, Static_Files_Twig_Extension};
+use function core\csrf_token\csrf_token;
 
 function render($url, $vars = [])
 {
@@ -19,15 +20,6 @@ function render($url, $vars = [])
     $template = $twig->load($url);
     $template->display($vars);
 
-}
-
-function csrf_token()
-{
-    $token = md5(SECRET_KEY . session_id());
-    $csrf_token = "<input type='hidden' name='csrf_token' value='$token'>";
-    $_SESSION['csrf_token'] = $token;
-
-    return $csrf_token; 
 }
 
 function session_security__go_to_login()
