@@ -5,39 +5,44 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bezhok Shop</title>
+    <!-- <link rel="stylesheet" type="text/css" href="{{ static('css/bootstrap-grid.min.css') }}"> не работает из-за бокс сайзинг -->
     <link rel="stylesheet" type="text/css" href="{{ static('css/mainstyle.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ static('css/fonts.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ static('css/fontello.css') }}">
     <script type="text/javascript" src="{{ static('javascript/jquery-3.2.1.min.js') }}"></script>
 </head>
 <body>
-    <header>
-        <section id="mainline">
-            <h1>Bezhok item shop</h1 style="color:red;"><a href="{{ url('admin') }}">Admin panel</a>
-            <section id='menu_button' onclick='displayHiddenMenu()'>&#9776;</section>
-            <nav class='hidden_header_nav'>
-                <a href="{{ url('index') }}">Главная</a>
-                <a href="{{ url('goodstypes') }}">Товары</a>
-                <a href="{{ url('contacts') }}">Контакты</a>
-                <a href="{{ url('about') }}">О нас</a>
-            </nav>
-        </section>
-        <nav class="header_nav">
-            <a href="{{ url('index') }}">Главная</a>
-            <a href="{{ url('goodstypes') }}">Товары</a>
-            <a href="{{ url('contacts') }}">Контакты</a>
-            <a href="{{ url('about') }}">О нас</a>
-        </nav>
-        <script type="text/javascript" src="{{ static('javascript/menu.js') }}"></script>
-    </header>
+
     <article id="main_part">
+        <div class="fake_main_line_fill"></div>
+        <header id="mainline">
+                <div class="header_logotype">
+                    <a href="{{ url('index') }}"><img src="{{ static('images/logo.svg') }}" alt="logo">Bezhok Shop</a>
+                </div>
+                <nav class="header_nav">
+                    <div>
+                        <a href="{{ url('goodstypes') }}">Товары</a>
+                        <a href="{{ url('contacts') }}">Контакты</a>
+                        <a href="{{ url('about') }}">О нас</a>
+                    </div>
+                    <div><a href="{{ url('admin') }}"><i class="icon-user"></i>Админка</a></div>
+                </nav>
+                <div id='menu_button' onclick='displayHiddenMenu()'><div>&#9776;</div></div>
+                <nav class='hidden_header_nav'>
+                    <!-- наполняем с помощью js -->
+                </nav>
+
+        </header>
+        <script type="text/javascript" src="{{ static('javascript/menu.js') }}"></script>
     {% block content %}
     {% endblock %}
+        <footer class="footer">
+            <article class="footer_block">
+                <section>2017 All rigts reserved.</section>
+                <section>Beshkok corporation</section>
+            </article>
+        </footer>
     </article>
-    <footer class="footer">
-        <article class="footer_block">
-            <section>2017 All rigts reserved.</section>
-            <section>Beshkok corporation</section>
-        </article>
-    </footer>
+
 </body>
 </html>

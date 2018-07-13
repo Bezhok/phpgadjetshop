@@ -11,7 +11,7 @@ function admin($request)
     session_security__go_to_login();
     $models_names = Admin::$admin_objects;
 
-    return render('admin/admin.html', ['models_names' => $models_names]);
+    return render('admin/admin.html', ['models_names' => $models_names, 'login' => $_SESSION['login']]);
 }
 
 function login($request)
@@ -45,7 +45,7 @@ function entries($request)
     session_security__go_to_login();
     $models_names = Admin::$admin_objects;
     $model_lower_name_from_request = $request['model_name']; // имя из запроса
-    
+
     if (!isset($models_names[$model_lower_name_from_request])) {
         return render('404.html', []); // если такой модели нет
     } else {
@@ -71,7 +71,9 @@ function entries($request)
     }
 
     $objs = new $model_name;
-    $objs->get_objects();
+
+    $fields_names = $models_names[$model_lower_name_from_request]['display_columns'];
+    $objs->get_columns($fields_names);
     $objs = $objs->order_by('id', 'DESC');
     $pagination = new Pagination($objs, 25, 7);
 
@@ -82,12 +84,16 @@ function entries($request)
         'this_model_name' => $model_lower_name_from_request,
         'objs' => $objs,
         'pagination' => $pagination,
-        'opertaion_log' => $opertaion_log
+        'opertaion_log' => $opertaion_log,
+        'fields_names' => $fields_names,
+        'this_verbose_model_name' => $models_names[$model_lower_name_from_request]['verbose_name'],
+        'login' => $_SESSION['login']
     ]);
 }
 
 function add_entry($request)
 {
+    session_security__go_to_login();
     $models_names = Admin::$admin_objects;
     $model_lower_name_from_request = $request['model_name']; // имя из запроса
     
@@ -102,7 +108,9 @@ function add_entry($request)
 
     return render('admin/add_entry.html', [
         'models_names' => $models_names,
-        'form' => $form
+        'form' => $form,
+        'this_verbose_model_name' => $models_names[$model_lower_name_from_request]['verbose_name'],
+        'login' => $_SESSION['login']
     ]);
 }
 
@@ -127,6 +135,8 @@ function edit_entry($request)
 
     return render('admin/edit_entry.html', [
         'models_names' => $models_names,
-        'form' => $form
+        'form' => $form,
+        'this_verbose_model_name' => $models_names[$model_lower_name_from_request]['verbose_name'],
+        'login' => $_SESSION['login']
     ]);
 }

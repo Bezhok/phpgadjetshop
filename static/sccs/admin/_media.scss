@@ -1,0 +1,33 @@
+.admin__hidden-md {
+    display: none;
+}
+
+.admin__hidden-sm {
+    display: none;
+}
+
+@media screen and (max-width: 767px) {
+.admin__hide-md {
+    display: none;
+}
+.admin__hidden-md {
+    display: block;
+}
+.admin__main_block {
+    display: flex;
+}
+.admin__action_board_menu_button {
+    display: block;
+}
+}
+
+@media screen and (max-width: 575px) {
+.admin__hide-sm {
+    display: none;
+}
+.admin__hidden-sm {
+    display: block;
+}
+}
+
+// make mobile first

@@ -2,12 +2,20 @@
 
 {% block panel_content %}
 
-    <form enctype="multipart/form-data" method="POST">
-        {{ form|raw }}
-        <div>
-            <button type="submit" class="btn btn-lg btn-block btn-primary mt-4" name="_addanother">Сохранить и добавить другой объект</button>
-            <button type="submit" class="btn btn-lg btn-block btn-primary mt-4" name="_save">Сохранить</button>
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="admin__main mb-3">
+                <div><b><strong></strong>{{ this_verbose_model_name }}</b></div>
+                <hr>
+                <form enctype="multipart/form-data" method="POST">
+                    {{ form|raw }}
+                    <div>
+                        <button type="submit" class="btn btn-primary mt-4 admin__main_button" name="_addanother">Сохранить и добавить другой объект</button>
+                        <button type="submit" class="btn btn-primary mt-4 admin__main_button " name="_save">Сохранить</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </form>
+    </div>
 
 {% endblock %}

@@ -3,12 +3,12 @@ namespace core\pagination;
 
 class Pagination
 {
-    public function __construct($obj, $objs_per_page, $max_count_on_page)
+    public function __construct($obj, $objs_per_page, $displayed_count_of_pages)
     {
         // обЪекты закрепляются к определнной странице
         $this->pages = ceil($obj->get_current_count__make_query() / $objs_per_page);
         
-        if ( !isset($_REQUEST['page']) || !is_numeric(($_REQUEST['page'])) ) { // проверка полуенных данных на существование и является ли целым числом
+        if ( !isset($_REQUEST['page']) || !is_numeric(($_REQUEST['page'])) ) { // проверка полученных данных на существование и является ли целым числом
             $this->page = 1;
         } elseif (isset($_REQUEST['page'])) {
             $this->page = $_REQUEST['page'];
@@ -37,13 +37,13 @@ class Pagination
             $stop_generate = 0;
             $this->pagination_list = [];
 
-            for ($i=1; $i <= $this->pages; $i++) { 
-                if ( $stop_generate <= $max_count_on_page && $i >= $this->page - ceil($max_count_on_page / 2) ) { // центрируем активированную кнопку, всего их 7 
-                    if ( $i == $this->page || (!$this->page && $i == 1) ) $this->number = $i;     //присвоение класса активированной ранее кнопке
+            for ($i=1; $i <= $this->pages; $i++) {  // центрируем активированную кнопку
+                if ( $stop_generate <= $displayed_count_of_pages && $i > $this->page - ceil($displayed_count_of_pages / 2) ) {
+                    if ( $i == $this->page || (!$this->page && $i == 1) ) $this->number = $i;     //присвоение номера активированной ранее кнопке
                     else $this->number = false;
                     $this->pagination_list[] = $i;
                     $stop_generate++;
-                    if ($stop_generate >= $max_count_on_page) break;  //заканчиваем создание, если больше 7
+                    if ($stop_generate >= $displayed_count_of_pages) break;  //заканчиваем создание, если больше определенного значения
                 }
             }
         }

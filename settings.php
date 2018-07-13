@@ -33,8 +33,3 @@ $db_host = 'php';
 $db_name = 'phpmyshop_db';
 $db_login = 'root';
 $db_password = '';
-
-// Composer
-if (file_exists(BASE_DIR . '/core/composer/vendor/autoload.php')) {
-    require_once BASE_DIR . '/core/composer/vendor/autoload.php';
-}

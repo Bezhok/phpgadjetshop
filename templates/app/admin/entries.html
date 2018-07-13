@@ -1,45 +1,92 @@
 {% extends 'admin/admin_panel_base.html' %}
 
 {% block panel_content %}
-
     <form method="POST">
-        <div class="col-4">
-            {{ csrf_token|raw }}
-            {{ opertaion_log }}
-            <a href="{{ url('add_entry', this_model_name) }}" class="addlink mt-1">Добавить</a>
-            <button type="submit"  class="addlink btn btn-lg btn-block btn-dark my-1" name="_delete">Удалить выбранные</button>
+        <div class="row">
+            <div class="col-12 col-md-9">
+
+                <div class="admin__main mb-3">
+                    <div><b><strong></strong>{{ this_verbose_model_name }}</b></div>
+                    <hr>
+                    <div class="admin__main_block">
+                        {{ csrf_token|raw }}
+                        <a href="{{ url('add_entry', this_model_name) }}" class="btn btn-success m-1">Добавить</a>
+                        <button type="submit"  class="btn btn-danger m-1" name="_delete">Удалить</button>
+                    </div>
+                    <div class="admin__main_table_container">
+                        {% if opertaion_log %}
+                            <div class="alert alert-warning">{{ opertaion_log }}</div>
+                        {% endif %}
+                        <table>
+                            <tr class="row2">
+                                <td></td>
+                                {% for field_name in fields_names %}
+                                    <td>{{ field_name }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% for obj in objs %}
+                            <tr class="{{ cycle(['row1', 'row2'], loop.index0) }}">
+                                <td>
+                                    <input type="checkbox" name="entries[]" value="{{ obj.id }}">
+                                </td>
+                                {% for i in obj %}
+                                    <td>
+                                        <a href="{{ url('edit_entry', this_model_name, obj.id) }}">{{ i }}</a>
+                                    </td>
+                                {% endfor %}  
+                            </tr>
+                        {% endfor %}
+                        </table>
+                    </div>
+                    <div class="pagination admin__main_pagination">
+
+                        {% if pagination.pages > 1 %}
+                            <div class="admin__main_page_block">
+                                {% if pagination.has_previous %}
+                                    <div class="page-item">
+                                        <a class="page-link" href="?page={{ pagination.previous_page_number }}">Предыдущая</a>
+                                    </div>
+                                {% else %}
+                                    <div class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1">Предыдущая</a>
+                                    </div>                                
+                                {% endif %}
+                            </div>
+                            <div class="admin__main_page_block">
+                                {% for num in pagination.pagination_list %}
+                                    <div class="page-item {% if num == pagination.page %} active {% endif %}">
+                                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="admin__main_page_block">
+                                {% if pagination.has_next %}
+                                    <div class="page-item">
+                                        <a class="page-link" href="?page={{ pagination.next_page_number }}">Следующая</a>
+                                    </div>
+                                {% else %}
+                                    <div class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1">Следующая</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+    
+                        {% endif %}
+                            
+                    </div>                    
+                </div>
+
+            </div>
+            <div class="col-2 col-md-3 admin__hide-md">
+                <div class="admin__r-sidebar">
+                    <div class="admin__buttons_block">
+                        {{ csrf_token|raw }}
+                        <a href="{{ url('add_entry', this_model_name) }}" class="btn btn-success">Добавить</a>
+                        <button type="submit"  class="btn btn-danger mt-1" name="_delete">Удалить</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <table>
-            {% for obj in objs %}
-                <tr>
-                    <td class="border border-dark"><input type="checkbox" name="entries[]" value="{{ obj.id }}"></td>
-                    {% for i in obj %}
-                        <td class="border border-dark"><a href="{{ url('edit_entry', this_model_name, obj.id) }}">{{ i }}</a></td>
-                    {% endfor %}                     
-                </tr>
-            {% endfor %}
-        </table>
-
-        <section id="schema_all_products_pagination">
-            
-            {% if pagination.has_previous %}
-                <a id='pagination_preview' href="?page={{ pagination.previous_page_number }}"><section class="pagination_nextNpre" onclick="id='pagination_activate'">Предыдущая</section></a>
-            {% endif %}
-
-            {% if pagination.pages > 1 %}
-                {% for num in pagination.pagination_list %}
-                    <a href="?page={{ num }}"><section class="pagination_number{% if num == pagination.page %} pagination_activate {% endif %}" onclick="this.id='pagination_activate'" >{{ num }}</section></a>
-                {% endfor %}
-            {% endif %}
-
-            {% if pagination.has_next %}
-                <a id='pagination_next' href="?page={{ pagination.next_page_number }}"><section class="pagination_nextNpre" onclick="id='pagination_activate'">Следующая</section></a>
-            {% endif %}
-            
-            <section id="pagination_nextNpre_section"></section> <!-- for js -->
-            <script type='text/javascript' src="{{ static('javascript/products_pagination.js') }}"></script>
-
-        </section>
     </form>
 
 {% endblock %}

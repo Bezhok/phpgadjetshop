@@ -1,28 +1,121 @@
 {% extends 'admin/admin_base.html' %}
 
-{% block content %}
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ static('css/admin/slideout_menu.css') }}">
+{% endblock %}
 
-    <div class="container-fluid admin-container"">
-        <div class="row admin-row">
-            <div class="sidebar ">
-                <div class="navbar">
-                    <ul class="nav flex-column">
-                        {% for model_name in models_names %}
-                            <li class="nav-item">
-                            <a class="nav-link" href="{{ url('entries', model_name.table_name ) }}">{{ model_name.verbose_name }}</a>
-                            </li>
-                        {% endfor %}                      
-                    </ul>
-                    <div><a href="{{ url('index') }}">Главная</a></div>
-                    <div><a href="{{ url('register') }}">Зарегистрироваться</a></div>
-                    <div><a href="{{ url('logout') }}">Выйти</a></div>
+{% block content %}
+    <!-- clone -->
+    <nav id="menu" class="slideout-menu slideout-menu-left">
+        <header class="admin__hidden_menu">
+            <div>
+                <div>
+                    <a href="{{ url('index') }}">
+                        <i class="icon-home"></i>
+                        Главная
+                    </a>
+                </div>
+                <div>
+                    <a href="{{ url('register') }}">
+                        <i class="icon-pencil"></i>
+                        Создать суперпользователя
+                    </a>
+                </div>
+                <div>
+                    <a href="{{ url('logout') }}">
+                        <i class="icon-logout"></i>
+                        Выход
+                    </a>
                 </div>
             </div>
-            <div class="col">
+            <hr>
+            <ul>
+                {% for model_name in models_names %}
+                    <li>
+                        <a href="{{ url('entries', model_name.table_name ) }}">{{ model_name.verbose_name }}</a>
+                    </li>
+                {% endfor %}                
+            </ul>
+        </header>
+    </nav>
+    <div class="container-fluid slideout-panel admin" id="panel">
+        <div class="row">
+            <div class="col-md-2 col-lg-2 admin__hide-md">
+                <div class="admin__l-sidebar">
+                    <nav class="admin__l-sidebar_nav">
+                        <ul>
+                            <li class="admin__l-sidebar_nav-item">
+                                <a class="nav-link" href="{{ url('index') }}"><img src="{{ static('images/admin/logo.svg') }}" alt="Главная"></a>
+                            </li>
+                            {% for model_name in models_names %}
+                                <li class="admin__l-sidebar_nav-item">
+                                    <a class="nav-link" href="{{ url('entries', model_name.table_name ) }}">{{ model_name.verbose_name }}</a>
+                                </li>
+                            {% endfor %}                      
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="col-12 col-md-10 col-lg-10 admin__nav_bar">
+                <div class="row admin__action_board">
+                    <div class="col">
+                        <div class="admin__action_board_item">
+                            <div>
+                                <button id="js-slideout-toggle" class="admin__action_board_menu_button"><i class="icon-menu"></i></button>
+                            </div>
+
+                            <div>
+                                <div>Привет, {{ login }}</div>
+                            </div>
+
+                            <div class="admin__hide-md">
+                                    <a href="{{ url('index') }}">Главная</a>
+                                    <a href="{{ url('register') }}">Создать суперпользователя</a>
+                            </div>
+
+                            <!-- clone -->
+                            <div>
+                                <a class="nav-link admin__hidden-md" href="{{ url('index') }}"><img src="{{ static('images/admin/logo.svg') }}" alt="Главная"></a>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-lg-2 admin__hide-sm">
+                        <div class="admin__action_board_item">
+                            <a class="admin__action_board_exit_button" href="{{ url('logout') }}">
+                                   Выход
+                            </a>
+                        </div>
+                    </div>
+                </div>
                 {% block panel_content %}
                 {% endblock %}
             </div>
         </div>
+
     </div>
+
+    <script src="{{ static('javascript/admin/slideout.min.js') }}"></script>
+    <script>
+        var slideout = new Slideout({
+          'panel': document.getElementById('panel'),
+          'menu': document.getElementById('menu'),
+          'padding': 256,
+          'tolerance': 70,
+          'touch': false
+        });
+        document.getElementById('js-slideout-toggle').addEventListener('click', function() {
+          slideout.toggle();
+        });
+
+
+        function hideMenu(){
+            if (slideout.isOpen() && document.documentElement.clientWidth >= 767) {
+                slideout.close();
+            }
+        }
+        window.addEventListener('resize', hideMenu);
+        hideMenu();
+    </script>
 
 {% endblock %}

@@ -2,76 +2,80 @@
 
 
 {% block content %}
-     <article class="schema_sorting_block">
-        <section class="schema_sorting_block_internal">
 
-            <section class="schema_sorting_block_internal_filter">
-                <form action="#" method="GET">
-                    <section class="schema_sorting_block_internal_title">Цена:</section>
-                        {{ price_form|raw }}
-
-                    <section class="schema_sorting_block_internal_title">Дата выхода на рынок:</section>
-                        {{ years_form|raw }}
-
-                    <section class="schema_sorting_block_internal_title">Тип товаров:</section>
-                        {{ manufacturer_form|raw }}
-
-                    <section class="schema_sorting_block_internal_title">Производитель:</section>
-                        {{ equipment_type_form|raw }}
-
-                    <button class="submit" type="submit">Submit</button>
-                </form>
+    <div class="schema">
+        <article class="schema_sorting_block">
+            <section class="schema_sorting_block_internal">
+        
+                <section class="schema_sorting_block_internal_filter">
+                    <form action="#" method="GET">
+                        <section class="schema_sorting_block_internal_title">Цена:</section>
+                            {{ price_form|raw }}
+        
+                        <section class="schema_sorting_block_internal_title">Дата выхода на рынок:</section>
+                            {{ years_form|raw }}
+        
+                        <section class="schema_sorting_block_internal_title">Тип товаров:</section>
+                            {{ manufacturer_form|raw }}
+        
+                        <section class="schema_sorting_block_internal_title">Производитель:</section>
+                            {{ equipment_type_form|raw }}
+        
+                        <button class="submit" type="submit">Submit</button>
+                    </form>
+                </section>
+                <script type='text/javascript' src="{{ static('javascript/checkbox.js') }}"></script>
             </section>
-            <script type='text/javascript' src="{{ static('javascript/checkbox.js') }}"></script>
-        </section>
-    </article>
-    <article class="schema_all_products"> 
-        <section class='schema_all_products_box'>
-
-            {% for product in products %}
-    
-                    <section class="schema_product_main">
-                        <section class="schema_product_img">
-                            <a href="{{ url('product', product.id) }}">
-                                <img src="{{ product.main_image }}" alt="{{ product.title }}"/>
-                            </a>
-                        </section>
-                        <section class="schema_product_description_block">
-                            {#<a href="{{ url('product', product.equipment_type.identifier, product.manufacturer.identifier, product.identifier) }}">#}
-                            <a href="{{ url('product', product.id) }}">
-                                <h2 class="schema_product_title">
-                                    {{ product.title }}
-                                </h2>
-                            </a>
-                            <section class="schema_price">{{ product.price }}руб</section>
-                            <section class="schema_product_description">
-                                {{ product.description }}
+        </article>
+        <article class="schema_all_products"> 
+            <section class='schema_all_products_box'>
+        
+                {% for product in products %}
+        
+                        <section class="schema_product_main">
+                            <section class="schema_product_img">
+                                <a href="{{ url('product', product.id) }}">
+                                    <img src="{{ product.main_image }}" alt="{{ product.title }}"/>
+                                </a>
+                            </section>
+                            <section class="schema_product_description_block">
+                                {#<a href="{{ url('product', product.equipment_type.identifier, product.manufacturer.identifier, product.identifier) }}">#}
+                                <a href="{{ url('product', product.id) }}">
+                                    <h2 class="schema_product_title">
+                                        {{ product.title }}
+                                    </h2>
+                                </a>
+                                <section class="schema_price">{{ product.price }}руб</section>
+                                <section class="schema_product_description">
+                                    {{ product.description }}
+                                </section>
                             </section>
                         </section>
-                    </section>
-
-            {% endfor %}
-        </section>
-        <section class="shema_line"></section>
-        <section id="schema_all_products_pagination">
-            
-            {% if pagination.has_previous %}
-                <a id='pagination_preview' href="?page={{ pagination.previous_page_number }}{{ query }}"><section class="pagination_nextNpre" onclick="id='pagination_activate'">Предыдущая</section></a>
-            {% endif %}
-
-            {% if pagination.pages > 1 %}
-                {% for num in pagination.pagination_list %}
-                    <a href="?page={{ num }}{{ query }}"><section class="pagination_number{% if num == pagination.page %} pagination_activate {% endif %}" onclick="this.id='pagination_activate'" >{{ num }}</section></a>
+        
                 {% endfor %}
-            {% endif %}
+            </section>
+            <section class="shema_line"></section>
+            <section id="schema_all_products_pagination">
+                
+                {% if pagination.has_previous %}
+                    <a id='pagination_preview' href="?page={{ pagination.previous_page_number }}{{ query }}"><section class="pagination_nextNpre" onclick="id='pagination_activate'">Предыдущая</section></a>
+                {% endif %}
+        
+                {% if pagination.pages > 1 %}
+                    {% for num in pagination.pagination_list %}
+                        <a href="?page={{ num }}{{ query }}"><section class="pagination_number{% if num == pagination.page %} pagination_activate {% endif %}" onclick="this.id='pagination_activate'" >{{ num }}</section></a>
+                    {% endfor %}
+                {% endif %}
+        
+                {% if pagination.has_next %}
+                    <a id='pagination_next' href="?page={{ pagination.next_page_number }}{{ query }}"><section class="pagination_nextNpre" onclick="id='pagination_activate'">Следующая</section></a>
+                {% endif %}
+                
+                <section id="pagination_nextNpre_section"></section> <!-- for js -->
+                <script type='text/javascript' src="{{ static('javascript/products_pagination.js') }}"></script>
+        
+            </section>
+        </article>
+    </div>
 
-            {% if pagination.has_next %}
-                <a id='pagination_next' href="?page={{ pagination.next_page_number }}{{ query }}"><section class="pagination_nextNpre" onclick="id='pagination_activate'">Следующая</section></a>
-            {% endif %}
-            
-            <section id="pagination_nextNpre_section"></section> <!-- for js -->
-            <script type='text/javascript' src="{{ static('javascript/products_pagination.js') }}"></script>
-
-        </section>
-    </article>
 {% endblock %}

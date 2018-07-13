@@ -130,7 +130,7 @@ class Form
                             $this->add_errors();
 
                         } else {
-                            $this->error_helper .= "<p>Фото выбрано.</p>";
+                            $this->error_helper .= "<p style='color:green;'>Фото выбрано.</p>";
                         }
                     } else {
                         $this->error_helper .= "Вы попытались загрузить " . count($file['name']) . " фала(ов) через одно поле ввода.";

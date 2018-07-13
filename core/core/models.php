@@ -59,6 +59,14 @@ class BaseModel {
         return $object;
     }
 
+    public function get_columns(array $columns)
+    { 
+        $columns = implode(', ', $columns);
+        $this->query = "SELECT $columns FROM $this->table_name";
+        
+        return $this;
+    }
+
     public function get_column__make_query($column)
     {
         $query = "SELECT $column FROM $this->table_name";
@@ -170,7 +178,7 @@ class BaseModel {
         $column = str_replace(' ', '', $column);
         $comparisons = ['<', '<=', '>', '>=', '='];
 
-        if (in_array($sign, $comparisons) && (is_numeric($value) || $sign = '=')) {
+        if (in_array($sign, $comparisons) && (is_numeric($value) || $sign == '=')) {
 
             if (is_numeric($value)) $value = intval($value); // чтобы сравнение проиходило по числу, а не по строке
 
@@ -197,7 +205,7 @@ class BaseModel {
 
             $this->query .= $condition;
             $this->values = array_merge($this->values, $value);
-        } else {
+        } elseif (!in_array($sign, $comparisons) && !$sign == 'IN') {
             throw new \Exception("Непоняный символ или неправильно применен.");
         }
 

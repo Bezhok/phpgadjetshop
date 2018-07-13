@@ -18,7 +18,7 @@ class Product extends BaseModel
        'equipmenttype' => ['type' => 'option', 'foreign' => '\models\Equipmenttype', 'verbose_name' => 'Тип товара'],
        'main_image' => ['type' => 'image', 'upload_to' => 'media_images', 'verbose_name' => 'Картинка'],
    ];
-   public $verbose_name = 'Продукт';
+   public $verbose_name = 'Продукты';
 }
 
 class Manufacturer extends BaseModel

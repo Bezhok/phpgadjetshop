@@ -1,4 +1,4 @@
-<?php // todo line 39
+<?php
 namespace forms;
 
 use core\forms\Form;
@@ -71,8 +71,13 @@ class AdminForm extends Form
             $this->log = '<p class="errornote">Неправильный логин или пароль.</p>';
         } else {
             $this->log = '<p class="success">Вы вошли в систему.</p>';
-            $_SESSION['login'] = true;
-            header("Location: /admin"); // редирект на админку
+            $_SESSION['login'] = $user['username'];
+
+            global $urlpatterns;
+            $url = new Url($urlpatterns);
+            $url = $url->url('admin');
+
+            header("Location: ". $url);
             exit();
         }
     }

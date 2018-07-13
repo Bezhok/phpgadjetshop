@@ -1,4 +1,8 @@
-templates/app/admin/gulp
+package-lock.json
+package.json
+gulpfile.js
+node_modules
+
 core/composer
 core/cache
 

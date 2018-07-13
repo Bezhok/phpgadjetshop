@@ -1,6 +1,12 @@
 <?php
 
 require_once 'settings.php';
+
+// Composer
+if (file_exists(BASE_DIR . '/core/composer/vendor/autoload.php')) {
+    require_once BASE_DIR . '/core/composer/vendor/autoload.php';
+}
+
 require_once BASE_DIR . '/app/urls.php';
 
 require_once CORE_DIR . '/csrf_token.php';
