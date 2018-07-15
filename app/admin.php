@@ -1,8 +1,8 @@
 <?php
-namespace admin;
+namespace app\admin;
 
-use core\admin\Admin;
-use models\{Product, Manufacturer, Equipmenttype};
+use \core\admin\Admin;
+use \app\models\{Product, Manufacturer, Equipmenttype};
 
 $admin = new Admin();
 $admin->register(new Product(), ['title']);

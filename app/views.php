@@ -1,18 +1,18 @@
 <?php
-namespace views;
+namespace app\views;
 
-use function core\views\render;
-use core\forms\SelectForm;
-use core\pagination\Pagination;
-use function forms\{price_form, years_form};
-use models\{Product, Manufacturer, Equipmenttype};
+use function \core\views\render;
+use \core\forms\SelectForm;
+use \core\pagination\Pagination;
+use function \app\forms\{price_form, years_form};
+use \app\models\{Product, Manufacturer, Equipmenttype};
 
 function index($request)
 {
     $manufacturers = new Manufacturer();
     $manufacturers = $manufacturers->get_objects()->make_query();
 
-    return render('index.html', ['manufacturers' => $manufacturers]);
+    return render('app/index.html', ['manufacturers' => $manufacturers]);
 }
 
 function products($request)
@@ -52,7 +52,7 @@ function products($request)
 
     $products = $products->make_query();
 
-    return render('products.html', 
+    return render('app/products.html', 
         [
          'products' => $products,
          'pagination' => $pagination,
@@ -75,7 +75,7 @@ function product($request)
     $product = $product->get_object($id_from_request, $columns_with_namesNvalues);
     if (!$product) return render('404.html', []);
 
-    return render('product.html', ['product' => $product]);
+    return render('app/product.html', ['product' => $product]);
 }
 
 
@@ -100,15 +100,15 @@ function goodstypes($request)
         $info[$value['id']]['min_price'] = min($prices);
     }
 
-    return render('goodstypes.html', ['equipmenttypes' => $equipmenttypes, 'info' => $info]);
+    return render('app/goodstypes.html', ['equipmenttypes' => $equipmenttypes, 'info' => $info]);
 }
 
 function about($request)
 {
-    return render('about.html', []);
+    return render('app/about.html', []);
 }
 
 function contacts($request)
 {
-    return render('contacts.html', []);
+    return render('app/contacts.html', []);
 }

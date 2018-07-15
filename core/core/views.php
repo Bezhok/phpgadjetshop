@@ -8,7 +8,7 @@ function render($url, $vars = [])
 {
     global $urlpatterns;
     $vars['csrf_token'] = csrf_token();
-    $loader = new \Twig_Loader_Filesystem(BASE_DIR . '/templates/app/');
+    $loader = new \Twig_Loader_Filesystem(BASE_DIR . '/templates/');
     $twig = new \Twig_Environment($loader, array(
         'strict_variables' => true,
         // 'cache' => TWIG_CHACHE_DIR, //кеш

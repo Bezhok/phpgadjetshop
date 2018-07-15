@@ -1,7 +1,7 @@
-{% extends 'admin/admin_base.html' %}
+{% extends 'admin/base.html' %}
 
 {% block head %}
-<link rel="stylesheet" type="text/css" href="{{ static('css/admin/slideout_menu.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ static('admin/css/slideout_menu.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -45,7 +45,7 @@
                     <nav class="admin__l-sidebar_nav">
                         <ul>
                             <li class="admin__l-sidebar_nav-item">
-                                <a class="nav-link" href="{{ url('index') }}"><img src="{{ static('images/admin/logo.svg') }}" alt="Главная"></a>
+                                <a class="nav-link" href="{{ url('index') }}"><img src="{{ static('admin/images/logo.svg') }}" alt="Главная"></a>
                             </li>
                             {% for model_name in models_names %}
                                 <li class="admin__l-sidebar_nav-item">
@@ -75,7 +75,7 @@
 
                             <!-- clone -->
                             <div>
-                                <a class="nav-link admin__hidden-md" href="{{ url('index') }}"><img src="{{ static('images/admin/logo.svg') }}" alt="Главная"></a>
+                                <a class="nav-link admin__hidden-md" href="{{ url('index') }}"><img src="{{ static('admin/images/logo.svg') }}" alt="Главная"></a>
                             </div>
 
                         </div>
@@ -95,7 +95,7 @@
 
     </div>
 
-    <script src="{{ static('javascript/admin/slideout.min.js') }}"></script>
+    <script src="{{ static('admin/javascript/slideout.min.js') }}"></script>
     <script>
         var slideout = new Slideout({
           'panel': document.getElementById('panel'),

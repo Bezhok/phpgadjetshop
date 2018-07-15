@@ -5,11 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bezhok Shop</title>
-    <!-- <link rel="stylesheet" type="text/css" href="{{ static('css/bootstrap-grid.min.css') }}"> не работает из-за бокс сайзинг -->
-    <link rel="stylesheet" type="text/css" href="{{ static('css/mainstyle.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ static('css/fonts.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ static('css/fontello.css') }}">
-    <script type="text/javascript" src="{{ static('javascript/jquery-3.2.1.min.js') }}"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="{{ static('app/css/bootstrap-grid.min.css') }}"> не работает из-за бокс сайзинг -->
+    <link rel="stylesheet" type="text/css" href="{{ static('app/css/mainstyle.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ static('app/css/fonts.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ static('app/css/fontello.css') }}">
+    <script type="text/javascript" src="{{ static('app/javascript/jquery-3.2.1.min.js') }}"></script>
 </head>
 <body>
 
@@ -17,7 +17,7 @@
         <div class="fake_main_line_fill"></div>
         <header id="mainline">
                 <div class="header_logotype">
-                    <a href="{{ url('index') }}"><img src="{{ static('images/logo.svg') }}" alt="logo">Bezhok Shop</a>
+                    <a href="{{ url('index') }}"><img src="{{ static('app/images/logo.svg') }}" alt="logo">Bezhok Shop</a>
                 </div>
                 <nav class="header_nav">
                     <div>
@@ -33,7 +33,7 @@
                 </nav>
 
         </header>
-        <script type="text/javascript" src="{{ static('javascript/menu.js') }}"></script>
+        <script type="text/javascript" src="{{ static('app/javascript/menu.js') }}"></script>
     {% block content %}
     {% endblock %}
         <footer class="footer">

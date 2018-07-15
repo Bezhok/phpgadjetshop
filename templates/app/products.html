@@ -1,4 +1,4 @@
-{% extends 'base.html'%}
+{% extends 'app/base.html'%}
 
 
 {% block content %}
@@ -24,7 +24,7 @@
                         <button class="submit" type="submit">Submit</button>
                     </form>
                 </section>
-                <script type='text/javascript' src="{{ static('javascript/checkbox.js') }}"></script>
+                <script type='text/javascript' src="{{ static('app/javascript/checkbox.js') }}"></script>
             </section>
         </article>
         <article class="schema_all_products"> 
@@ -72,7 +72,7 @@
                 {% endif %}
                 
                 <section id="pagination_nextNpre_section"></section> <!-- for js -->
-                <script type='text/javascript' src="{{ static('javascript/products_pagination.js') }}"></script>
+                <script type='text/javascript' src="{{ static('app/javascript/products_pagination.js') }}"></script>
         
             </section>
         </article>

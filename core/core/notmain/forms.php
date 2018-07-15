@@ -326,7 +326,7 @@ class Form
                     if ( isset($_POST['csrf_token']) && $_POST['csrf_token'] == $_SESSION['csrf_token']) { // верификация пройдена [редирект на админ]
                         $this->upload_data_fill();
                     } else {
-                        require_once BASE_DIR . '/templates/app/403_csrf_error.html';
+                        require_once BASE_DIR . '/templates/403_csrf_error.html';
                         exit();
                     }
                 } catch (\PDOException $e) {

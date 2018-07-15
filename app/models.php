@@ -1,5 +1,5 @@
 <?php
-namespace models;
+namespace app\models;
 
 use \core\models\BaseModel;
 
@@ -11,11 +11,11 @@ class Product extends BaseModel
 {
    public $mandatory_fields = [
        'year' => ['type' => 'number', 'verbose_name' => 'Год'],
-       'manufacturer' => ['type' => 'option', 'foreign' => '\models\Manufacturer', 'verbose_name' => 'Производитель'],
+       'manufacturer' => ['type' => 'option', 'foreign' => '\app\models\Manufacturer', 'verbose_name' => 'Производитель'],
        'title' => ['type' => 'varchar', 'verbose_name' => 'Название'],
        'price' => ['type' => 'number', 'verbose_name' => 'Цена'],
        'description' => ['type' => 'text', 'verbose_name' => 'Описание'],
-       'equipmenttype' => ['type' => 'option', 'foreign' => '\models\Equipmenttype', 'verbose_name' => 'Тип товара'],
+       'equipmenttype' => ['type' => 'option', 'foreign' => '\app\models\Equipmenttype', 'verbose_name' => 'Тип товара'],
        'main_image' => ['type' => 'image', 'upload_to' => 'media_images', 'verbose_name' => 'Картинка'],
    ];
    public $verbose_name = 'Продукты';

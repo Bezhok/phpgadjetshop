@@ -1,40 +1,87 @@
 <?php
 
+
+// *************************** Cобственный быдло-автолоудер*********************************************************************
+function require_all($path) {
+   try {
+        $handle = opendir($path);
+        readdir($handle);
+        
+        $required = [];
+        while (false !== ($entry = readdir($handle))) {
+            if ($entry != "." && $entry != "..") {
+                $required[] = $entry;
+            }
+        }
+    
+        foreach ($required as $file_name) {
+            if (is_file($path . "/" . $file_name)) {
+                require_once $path . "/" . $file_name;
+            } else {
+                require_all($path . "/" . $file_name);
+            }
+        }
+    } finally {
+        closedir($handle);
+    } 
+}
+
+// The most standart
 require_once 'settings.php';
+require_once 'urls.php';
 
 // Composer
 if (file_exists(BASE_DIR . '/core/composer/vendor/autoload.php')) {
     require_once BASE_DIR . '/core/composer/vendor/autoload.php';
 }
 
-require_once BASE_DIR . '/app/urls.php';
+// foreache in core/core/
+require_all(CORE_DIR);
 
-require_once CORE_DIR . '/csrf_token.php';
-require_once CORE_DIR . '/models.php';
-require_once CORE_DIR . '/views.php';
-require_once CORE_DIR . '/urls.php';
+// foreach in modules
+require_all(BASE_DIR . "/core/modules");
 
-// *************************foreache in core/core/notmain
-require_once CORE_DIR . '/notmain/forms.php';
-require_once CORE_DIR . '/notmain/pagination.php';
-require_once CORE_DIR . '/notmain/admin.php';
-//**************************
+// Plug apps
+foreach ($apps as $dir_name) {
+    $mandatory = [
+        'models.php',
+        'views.php',
+        'forms.php'
+    ];
 
-// ************************foreach in moduls
-require_once TWIG_EXTENSIONS_DIR . '/urls.extension.php';
-require_once TWIG_EXTENSIONS_DIR . '/static_files.extension.php';
-// ************************
+    foreach ($mandatory as $v) {
+        require_once BASE_DIR . "/$dir_name/" . $v;
+    }
 
-require_once BASE_DIR . '/app/models.php';
-require_once BASE_DIR . '/app/views.php';
-require_once BASE_DIR . '/app/views_admin.php';
+    try {
+        $handle = opendir(BASE_DIR . "/$dir_name");
+        readdir($handle);
+        
+        $required = [];
+        while (false !== ($entry = readdir($handle))) {
+            if ($entry != "." && $entry != "..") {
+                $required[] = $entry;
+            }
+        }
 
-// ************************foreach in app/notmain(exclude urls)
-require_once BASE_DIR . '/app/notmain/admin.php';
-require_once BASE_DIR . '/app/notmain/forms.php';
-// ************************
+        $required = array_diff($required, $mandatory);
+
+        foreach ($required as $file_name) {
+            if (is_file(BASE_DIR . "/$dir_name/" . $file_name)) {
+                require_once BASE_DIR . "/$dir_name/" . $file_name;
+            } else {
+                require_all(BASE_DIR . "/$dir_name/" . $file_name);
+            }
+        }
+
+    } finally {
+        closedir($handle);
+    }
+}
+// *************************** Cобственный быдло-автолоудер*********************************************************************
 
 
+// Plug pdo
 $pdo = new \PDO("mysql:host=$db_host;dbname=$db_name", $db_login, $db_password, $db_options);
 core\models\BaseModel::plug_pdo($pdo);
 

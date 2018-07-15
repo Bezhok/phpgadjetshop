@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'app/base.html' %}
 
 
 {% block head %}<meta name="" content="" />{% endblock %}
@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="home-intro-section__item">
-                <img src="{{ static('images/laptop.png') }}" alt="laptop" class="home-intro-section__item_laptop_image">
+                <img src="{{ static('app/images/laptop.png') }}" alt="laptop" class="home-intro-section__item_laptop_image">
             </div>
 
         </div>
@@ -50,7 +50,7 @@
                 </section>
                 <section class='slider_button slider_button_next' onclick='nextBlock()'></section>
             </section>
-            <script type="text/javascript" src="{{ static('javascript/index_brand_slider.js') }}"></script>
+            <script type="text/javascript" src="{{ static('app/javascript/index_brand_slider.js') }}"></script>
         </div>
 
         
@@ -62,7 +62,7 @@
             <div class="home-intro-section__item small-item">
                     <a href="#"><button class="home-intro-section__button" id="home-intro-section__button">BUY IT NOW</button></a>
             </div>
-            <script type="text/javascript" src="{{ static('javascript/home-intro-section__button.js') }}"></script>
+            <script type="text/javascript" src="{{ static('app/javascript/home-intro-section__button.js') }}"></script>
         </div>
         <div class="landing_description">
                 <div class="landing_description_title">Повседневная практика показывает</div>

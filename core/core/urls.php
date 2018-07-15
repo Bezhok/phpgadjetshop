@@ -67,7 +67,7 @@ class Url
                 break;
             }
         }
-        if (!$is_url_exist) require_once BASE_DIR . '/templates/app/404.html';
+        if (!$is_url_exist) require_once BASE_DIR . '/templates/404.html';
         exit();
 
     }

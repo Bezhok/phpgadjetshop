@@ -1,10 +1,10 @@
 <?php
-namespace views;
+namespace admin\views;
 
 use function \core\views\{render, session_security__go_to_login, session_security__go_to_admin};
-use core\pagination\Pagination;
-use core\admin\Admin;
-use forms\{AdminForm, RegisterForm, AddObjectForm, EditObjectForm};
+use \core\pagination\Pagination;
+use \core\admin\Admin;
+use \admin\forms\{AdminForm, RegisterForm, AddObjectForm, EditObjectForm};
 
 function admin($request)
 {   
@@ -19,7 +19,7 @@ function login($request)
     session_security__go_to_admin();
     $form = new AdminForm();
 
-    return render('admin/admin_sign-in.html', [
+    return render('admin/sign-in.html', [
             'admin_form' => $form
         ]);
 }
@@ -37,7 +37,7 @@ function register($request)
     session_security__go_to_login();
     $form = new RegisterForm();
 
-    return render('admin/admin_register.html', ['admin_form' => $form]);
+    return render('admin/register.html', ['admin_form' => $form]);
 }
 
 function entries($request)
