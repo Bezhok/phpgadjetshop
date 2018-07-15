@@ -5,10 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bezhok Shop</title>
-    <!-- <link rel="stylesheet" type="text/css" href="{{ static('app/css/bootstrap-grid.min.css') }}"> не работает из-за бокс сайзинг -->
-    <link rel="stylesheet" type="text/css" href="{{ static('app/css/mainstyle.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ static('app/css/fonts.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ static('app/css/fontello.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ static('app/css/main.min.css') }}">
     <script type="text/javascript" src="{{ static('app/javascript/jquery-3.2.1.min.js') }}"></script>
 </head>
 <body>
@@ -31,7 +28,6 @@
                 <nav class='hidden_header_nav'>
                     <!-- наполняем с помощью js -->
                 </nav>
-
         </header>
         <script type="text/javascript" src="{{ static('app/javascript/menu.js') }}"></script>
     {% block content %}
